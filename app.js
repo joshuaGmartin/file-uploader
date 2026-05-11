@@ -37,9 +37,9 @@ app.use(
 // ==========================================================================
 // authentication
 // ==========================================================================
-// const passport = require("passport");
-// require("./config/passport");
-// app.use(passport.session());
+const passport = require("passport");
+require("./config/passport");
+app.use(passport.session());
 
 // ==========================================================================
 // variables/middleware
@@ -47,7 +47,7 @@ app.use(
 //globals
 app.use((req, res, next) => {
   res.locals.appTitle = "appTitleGoesHere";
-  //   res.locals.isAuth = req.isAuthenticated();
+  res.locals.isAuth = req.isAuthenticated();
   // in .ejs, check locals.isAuth first to avoid crash on locals.user check
   res.locals.user = req.user;
   next();

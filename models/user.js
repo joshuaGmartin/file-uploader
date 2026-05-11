@@ -1,4 +1,4 @@
-const { pgPool } = require("../config/database");
+const pgPool = require("../config/database");
 
 module.exports.createUser = async function (username, password) {
   const query = `
