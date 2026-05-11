@@ -1,0 +1,34 @@
+<header>
+  <a href="/" class="hide-link-style">
+    <h1><%= locals.appTitle %></h1>
+  </a>
+  <nav>
+    <% if(locals.isAuth) { %>
+    <!-- user/logout -->
+    <div>
+      <span>
+        Hi,
+        <%= locals.user.username %>!
+      </span>
+      <span>
+        (
+        <form action="/logout" method="post">
+          <button type="submit" class="link-style">logout</button>
+        </form>
+        )
+      </span>
+    </div>
+
+    <!-- separator -->
+    <span>|</span>
+    <% } %>
+
+    <!-- source code -->
+    <a
+      href="https://github.com/joshuaGmartin/"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Source</a
+    >
+  </nav>
+</header>

@@ -1,0 +1,34 @@
+<form action="/login" method="post">
+  <h2>Login</h2>
+  <%- include("../errors") %>
+  <label for="username"
+    >Username<input
+      type="text"
+      name="username"
+      id="username"
+      value="<%= locals.values?.username %>"
+      required
+  /></label>
+  <label for="password">
+    <div>
+      Password
+      <span id="show-password-button" class="unselectable show-clickable"
+        >Show</span
+      >
+    </div>
+    <div class="password-input-line">
+      <input
+        type="password"
+        name="password"
+        id="password"
+        value="<%= locals.values?.password %>"
+        required
+      />
+    </div>
+  </label>
+
+  <div class="buttons">
+    <button type="submit">Login</button>
+    <button id="demo-password-button">Fill Demo Password</button>
+  </div>
+</form>
