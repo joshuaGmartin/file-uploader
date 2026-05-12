@@ -1,7 +1,11 @@
-<form action="/register" method="post">
+<form
+  action="/register"
+  method="post"
+  class="top-spacing-xl column align-center gap"
+>
   <h2>Create an Account</h2>
   <%- include("../errors") %>
-  <label for="username"
+  <label for="username" class="column"
     >Username<input
       type="text"
       name="username"
@@ -10,23 +14,21 @@
       required
   /></label>
   <label for="password">
-    <div>
+    <div class="row just-space-between">
       Password
       <span id="show-password-button" class="unselectable show-clickable"
         >Show</span
       >
     </div>
-    <div class="password-input-line">
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value="<%= locals.values?.password %>"
-        required
-      />
-    </div>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      value="<%= locals.values?.password %>"
+      required
+    />
   </label>
-  <label for="confirm-password">
+  <label for="confirm-password" class="column">
     Confirm password
     <div class="password-input-line">
       <input
@@ -38,7 +40,7 @@
       />
     </div>
   </label>
-  <div class="buttons">
+  <div class="column align-center gap-s">
     <button type="submit">Submit</button>
     <button id="demo-password-button">Fill Demo Password</button>
   </div>

@@ -21,8 +21,6 @@ module.exports.findByUsername = async function (username) {
 
   const result = await pgPool.query(query, values);
 
-  console.log(result);
-
   return result.rows[0];
 };
 

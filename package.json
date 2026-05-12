@@ -1,5 +1,5 @@
 {
-  "name": "file-uploader",
+  "name": "template",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joshuaGmartin/file-uploader.git"
+    "url": "git+https://github.com/joshuaGmartin/template.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joshuaGmartin/file-uploader/issues"
+    "url": "https://github.com/joshuaGmartin/template/issues"
   },
-  "homepage": "https://github.com/joshuaGmartin/file-uploader#readme",
+  "homepage": "https://github.com/joshuaGmartin/template#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "connect-pg-simple": "^10.0.0",

@@ -2,15 +2,101 @@
 
 :root {
   --primary-color: black;
+  --secondary-color: white;
+  --primary-bg: aquamarine;
+  --secondary-bg: plum;
+
+  --spacing-xs: 0.25rem;
+  --spacing-s: 0.5rem;
+  --spacing: 1rem;
+  --spacing-l: 2rem;
+  --spacing-xl: 5rem;
 
   color: var(--primary-color);
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* debugging */
+  * {
+    /* outline: red solid 1px; */
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 var(--spacing);
+
+  background-color: var(--primary-bg);
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  position: sticky;
+  top: 0;
+
+  nav {
+    display: flex;
+    gap: var(--spacing-s);
+
+    #header-user-logout {
+      display: flex;
+      gap: var(--spacing-xs);
+
+      #header-logout {
+        display: flex;
+        align-items: center;
+
+        min-width: max-content;
+      }
+    }
+  }
 }
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+/* ========================================================================== */
+/* Classes */
+/* ========================================================================== */
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.just-space-between {
+  justify-content: space-between;
+}
+.top-spacing-xl {
+  margin-top: var(--spacing-xl);
+}
+
+.gap {
+  gap: var(--spacing);
+}
+
+.gap-s {
+  gap: var(--spacing-s);
+}
+
+/* ========================================================================== */
+/* Special Classes */
+/* ========================================================================== */
 
 .hide-link-style {
   appearance: none;

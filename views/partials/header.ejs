@@ -5,12 +5,12 @@
   <nav>
     <% if(locals.isAuth) { %>
     <!-- user/logout -->
-    <div>
+    <div id="header-user-logout">
       <span>
         Hi,
         <%= locals.user.username %>!
       </span>
-      <span>
+      <span id="header-logout">
         (
         <form action="/logout" method="post">
           <button type="submit" class="link-style">logout</button>
