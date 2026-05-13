@@ -33,8 +33,9 @@ const auth = (req, res, next) =>
 
 module.exports.postLogin = [
   validateUser,
-  // function (req, res, next) {
   (req, res, next) => {
+    // or
+    // function (req, res, next) {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {

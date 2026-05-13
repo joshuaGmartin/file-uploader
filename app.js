@@ -16,21 +16,28 @@ app.use(express.urlencoded({ extended: true }));
 // ==========================================================================
 // session
 // ==========================================================================
-const session = require("express-session");
-const pgSession = require("connect-pg-simple")(session);
-const pgPool = require("./config/database");
+const expressSession = require("express-session");
+const { PrismaPg } = require("@prisma/adapter-pg"); // For other db adapters, see Prisma docs
+const { PrismaClient } = require("./generated/prisma/client.js");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
-const sessionStore = new pgSession({ pool: pgPool });
+const connectionString = `${process.env.DATABASE_URL}`;
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 app.use(
-  session({
-    secret: process.env.COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
+  expressSession({
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week in ms
     },
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
   }),
 );
 
@@ -53,9 +60,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// //debug
+//debug
 // app.use((req, res, next) => {
-//   console.log(res.locals.user);
+//   console.log(res.locals);
 //   next();
 // });
 
