@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
-    <title>Home | <%= locals.appTitle %></title>
+    <title><%= locals.pageTitle %> | <%= locals.appTitle %></title>
   </head>
   <body>
     <%- include("partials/header") %>
 
     <main>
-      <h2>homepage</h2>
+      <h2>my drive</h2>
+      <%- include("partials/forms/create-folder") %>
     </main>
   </body>
 </html>

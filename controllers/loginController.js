@@ -27,7 +27,7 @@ const auth = (req, res, next) =>
     req.login(user, (err) => {
       if (err) return next(err);
 
-      return res.redirect("/home");
+      return res.redirect("/drive/root");
     });
   })(req, res, next); // passport.authenticate returns a function that needs to be called with wrapper function's (auth) parameters
 

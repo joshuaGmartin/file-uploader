@@ -53,7 +53,7 @@ app.use(passport.session());
 // ==========================================================================
 //globals
 app.use((req, res, next) => {
-  res.locals.appTitle = "appTitleGoesHere";
+  res.locals.appTitle = "gdocsLite";
   res.locals.isAuth = req.isAuthenticated();
   // in .ejs, check locals.isAuth first to avoid crash on locals.user check
   res.locals.user = req.user;

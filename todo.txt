@@ -2,9 +2,33 @@
 -make template instructions
 -update to esm?
 -Passport.js. Use the Prisma session store library 
+-owner of folder check
 
 
 
 
 
-CREATE DATABASE mydatabase;
+for template:
+-change default source to gh repos page
+-add "change source link to repo in views/partials/header.ejs"
+useful cmds:
+    -npx prisma migrate dev --name your-migration-name
+    -npx prisma generate
+    -npx prisma studio --config ./prisma.config.js
+    
+-focus on login input?
+
+
+
+  // =======================================
+  // fill demo password
+  // =======================================
+  function fillDemoPassword() {
+    const btn = document.getElementById("demo-password-button");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        console.log(passwordInput);
+        console.log(confirmPasswordInput);

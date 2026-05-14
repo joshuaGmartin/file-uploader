@@ -35,9 +35,6 @@ if (path === "/login" || path === "/register") {
 
     if (btn) {
       btn.addEventListener("click", (e) => {
-        console.log(passwordInput);
-        console.log(confirmPasswordInput);
-
         // no submit
         e.preventDefault();
 
