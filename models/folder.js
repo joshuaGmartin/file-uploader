@@ -4,7 +4,7 @@ module.exports.createFolder = async function (folderName, ownerId, parentId) {
   const isRoot = parentId === "root";
 
   if (parentId === "root") {
-    const folder = await prisma.folder.create({
+    return await prisma.folder.create({
       data: {
         name: folderName,
         ownerId,
@@ -14,14 +14,13 @@ module.exports.createFolder = async function (folderName, ownerId, parentId) {
   }
 };
 
-// module.exports.findByUsername = async function (username) {
-//   return await prisma.user.findUnique({
-//     where: { username }, // { username } = { username: username}
-//   });
-// };
-
-// module.exports.findByUserID = async function (id) {
-//   return await prisma.user.findUnique({
-//     where: { id }, // { id } = { id: id}
-//   });
-// };
+module.exports.getChildren = async function (folderId, userId) {
+  if (folderId === "root") {
+    return await prisma.folder.findMany({
+      where: {
+        ownerId: userId,
+        parentId: null,
+      },
+    });
+  }
+};

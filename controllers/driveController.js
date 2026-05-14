@@ -5,13 +5,10 @@ module.exports.getDrive = async function (req, res) {
   const folderId = req.params.folderId;
   let pageTitle;
 
-  if (folderId === "root") {
-    // get root folders
-    pageTitle = "root";
-  } else {
-    // get folder folders
-    pageTitle = folder.name;
-  }
+  const childfolders = await folder.getChildren(folderId, req.user.id);
 
-  res.render("drive", { pageTitle, folderId });
+  if (folderId === "root") pageTitle = "root";
+  // else pageTitle = folder.name;
+
+  res.render("drive", { pageTitle, folderId, childfolders });
 };

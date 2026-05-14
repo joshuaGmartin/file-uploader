@@ -12,6 +12,15 @@
     <main>
       <h2>my drive</h2>
       <%- include("partials/forms/create-folder") %>
+
+      <div>
+        <ul>
+          <% locals.childfolders.forEach((childFolder) => { %>
+          <li><%= childFolder.name %></li>
+
+          <% }) %>
+        </ul>
+      </div>
     </main>
   </body>
 </html>

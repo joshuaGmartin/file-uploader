@@ -1,7 +1,4 @@
--convert to prisma
--make template instructions
 -update to esm?
--Passport.js. Use the Prisma session store library 
 -owner of folder check
 
 

@@ -17,6 +17,7 @@ module.exports.findByUsername = async function (username) {
 
 module.exports.findByUserID = async function (id) {
   return await prisma.user.findUnique({
-    where: { id }, // { id } = { id: id}
+    where: { id },
+    include: { folders: true },
   });
 };
