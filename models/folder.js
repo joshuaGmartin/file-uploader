@@ -31,3 +31,19 @@ module.exports.getChildren = async function (folderId, userId) {
 
   return (await this.findByFolderID(folderId)).children;
 };
+
+module.exports.getParents = async function (folderId) {
+  async function getRawParents(folderId) {
+    if (folderId === "root") return []; // close early if in root ("root" from driveController)
+    if (folderId === null) return []; // end if reach root (null from recursion in DB)
+
+    const thisFolder = await module.exports.findByFolderID(folderId);
+
+    return [thisFolder].concat(await getRawParents(thisFolder.parentId));
+  }
+
+  let rawParents = await getRawParents(folderId);
+  rawParents.reverse(); // need top down for /drive path display
+
+  return rawParents;
+};

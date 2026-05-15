@@ -11,6 +11,19 @@
 
     <main>
       <h2>my drive</h2>
+
+      <div class="row gap-s">
+        <b>Current Path:</b>
+        <span class="row">
+          <a href="/drive/root">root</a> <%
+          locals.parentFolders.forEach((parentFolder) => { %> /<a
+            href="/drive/<%= parentFolder.id %>"
+            ><%= parentFolder.name %></a
+          >
+          <% }) %>
+        </span>
+      </div>
+
       <%- include("partials/forms/create-folder") %>
 
       <div>
