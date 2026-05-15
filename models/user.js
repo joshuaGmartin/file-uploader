@@ -18,6 +18,6 @@ module.exports.findByUsername = async function (username) {
 module.exports.findByUserID = async function (id) {
   return await prisma.user.findUnique({
     where: { id },
-    include: { folders: true },
+    // include: { folders: true },
   });
 };

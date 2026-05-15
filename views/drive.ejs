@@ -15,10 +15,15 @@
 
       <div>
         <ul>
-          <% locals.childfolders.forEach((childFolder) => { %>
-          <li><%= childFolder.name %></li>
+          <% if (locals.childFolders) { %>
+
+          <% locals.childFolders.forEach((childFolder) => { %>
+          <li>
+            <a href="/drive/<%= childFolder.id %>"> <%= childFolder.name %> </a>
+          </li>
 
           <% }) %>
+          <% } %>
         </ul>
       </div>
     </main>
