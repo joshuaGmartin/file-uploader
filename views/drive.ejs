@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
+    <script src="/js/eventListeners.js" defer></script>
     <title><%= locals.pageTitle %> | <%= locals.appTitle %></title>
   </head>
   <body>
@@ -24,21 +25,35 @@
         </span>
       </div>
 
-      <%- include("partials/forms/create-folder") %>
-
       <div>
+        <h3>Folders</h3>
         <ul>
           <% if (locals.childFolders) { %>
 
           <% locals.childFolders.forEach((childFolder) => { %>
           <li>
-            <a href="/drive/<%= childFolder.id %>"> <%= childFolder.name %> </a>
+            <div>
+              <a href="/drive/<%= childFolder.id %>">
+                <%= childFolder.name %>
+              </a>
+              —
+              <button
+                class="edit-folder-button"
+                data-folder-id="<%= childFolder.id %>"
+                data-folder-name="<%= childFolder.name %>"
+              >
+                Edit
+              </button>
+            </div>
           </li>
 
           <% }) %>
           <% } %>
         </ul>
       </div>
+
+      <%- include("partials/forms/create-folder") %>
+      <%- include("partials/modals/edit-folder") %>
     </main>
   </body>
 </html>
