@@ -1,7 +1,21 @@
-<% if (locals.errors) { %>
+<!-- locals implies data may not exist -->
+<% if (locals.errors) { // skip if errors no exist %>
+<!-- checks if errors contains a sub-object -->
+<% if(errors[locals.modal]) { %>
+<ul>
+  <% errors[locals.modal].forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }); %>
+</ul>
+
+<!-- default (used in login/register/etc)-->
+<!-- need check for isArray as errors may contain a sub-object -->
+<% } else if (Array.isArray(errors)) { %>
 <ul>
   <% errors.forEach(error => { %>
   <li><%= error.msg %></li>
   <% }); %>
 </ul>
+<% } %>
+
 <% } %>

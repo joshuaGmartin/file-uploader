@@ -1,5 +1,9 @@
+<% if (locals.modal === "editFolder") { %>
+<%- include("../../partials/errors") %>
+<% } %>
+
 <!-- action set in js -->
-<form action="" method="post">
+<form action="" method="post" id="edit-folder-form">
   <h2>Edit folder</h2>
   <label for="folderName">
     <!-- value set in js -->

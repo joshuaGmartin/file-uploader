@@ -1,3 +1,7 @@
+<% if (locals.modal === "createFolder") { %>
+<%- include("../../partials/errors") %>
+<% } %>
+
 <form action="/drive/<%= locals.folderId %>/folder/create" method="post">
   <h2>Create folder</h2>
   <label for="folderName"

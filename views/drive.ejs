@@ -17,7 +17,7 @@
         <b>Current Path:</b>
         <span class="row">
           <a href="/drive/root">root</a> <%
-          locals.parentFolders.forEach((parentFolder) => { %> /<a
+          locals.parentFolders.forEach((parentFolder) => { %>/<a
             href="/drive/<%= parentFolder.id %>"
             ><%= parentFolder.name %></a
           >
@@ -52,8 +52,18 @@
         </ul>
       </div>
 
-      <%- include("partials/forms/create-folder") %>
+      <button id="create-folder-button">Add Folder</button>
+
+      <%- include("partials/modals/create-folder") %>
       <%- include("partials/modals/edit-folder") %>
     </main>
   </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if ("<%= locals.modal %>" === "createFolder") {
+      document.getElementById("create-folder-modal").style.display = "block";
+    }
+  });
+</script>
