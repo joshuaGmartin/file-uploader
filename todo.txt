@@ -1,6 +1,9 @@
 -update to esm?
 -owner of folder check
 -addEventListener for drive editFolder popup
+  -close and modal styling
+    -close should be redirect to curr page to reset modal data
+-focus on login input
 
 
 
@@ -14,7 +17,6 @@ useful cmds:
     -npx prisma generate
     -npx prisma studio --config ./prisma.config.js
     
--focus on login input?
 
 
 

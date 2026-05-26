@@ -63,7 +63,19 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     if ("<%= locals.modal %>" === "createFolder") {
-      document.getElementById("create-folder-modal").style.display = "block";
+      const createFolderModal = document.getElementById("create-folder-modal");
+      createFolderModal.style.display = "block";
+
+      createFolderModal.querySelector("input#folderName").focus();
+    }
+    if ("<%= locals.modal %>" === "editFolder") {
+      const editFolderModal = document.getElementById("edit-folder-modal");
+      editFolderModal.style.display = "block";
+
+      const editFolderInput = editFolderModal.querySelector("input#folderName");
+
+      editFolderInput.focus();
+      editFolderInput.select();
     }
   });
 </script>

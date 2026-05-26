@@ -1,10 +1,10 @@
-<% if (locals.modal === "editFolder") { %>
-<%- include("../../partials/errors") %>
-<% } %>
-
-<!-- action set in js -->
-<form action="" method="post" id="edit-folder-form">
+<!-- if click edit btn, action set in js. If popup persist on error, set action here -->
+<% const formAction = locals.modalFolderId ? `/drive/${locals.modalFolderId}/folder/edit` : "" %>
+<form action="<%= formAction %>" method="post" id="edit-folder-form">
   <h2>Edit folder</h2>
+  <% if (locals.modal === "editFolder") { %>
+  <%- include("../../partials/errors") %>
+  <% } %>
   <label for="folderName">
     <!-- value set in js -->
     Folder name:
@@ -13,7 +13,7 @@
       name="folderName"
       id="folderName"
       placeholder="Name your folder..."
-      value=""
+      value="<%= locals.modalValues?.folderName || '' %>"
       required
   /></label>
   <button type="submit">Edit</button>

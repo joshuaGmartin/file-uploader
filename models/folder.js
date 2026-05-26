@@ -47,3 +47,15 @@ module.exports.getParents = async function (folderId) {
 
   return rawParents;
 };
+
+module.exports.editFolderName = async function (folderId, folderName) {
+  return await prisma.folder.update({
+    where: { id: Number(folderId) },
+    data: { name: folderName },
+  });
+};
+
+module.exports.getParentId = async function (folderId) {
+  const parentId = await module.exports.findByFolderID(folderId).parentId;
+  return parentId ? parentId : "root";
+};

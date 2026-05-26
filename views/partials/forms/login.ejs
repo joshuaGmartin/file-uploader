@@ -10,7 +10,7 @@
       type="text"
       name="username"
       id="username"
-      value="<%= locals.values?.username %>"
+      value="<%= locals.values?.username || '' %>"
       required
   /></label>
   <label for="password" class="column">
@@ -24,7 +24,7 @@
       type="password"
       name="password"
       id="password"
-      value="<%= locals.values?.password %>"
+      value="<%= locals.values?.password || '' %>"
       required
     />
   </label>

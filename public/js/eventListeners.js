@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         createFolderButton.addEventListener("click", () => {
           createFolderModal.style.display = "block";
+
+          createFolderModal.querySelector("input#folderName").focus();
         });
       }
     }
@@ -97,6 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
             editFolderModal.style.display = "block";
 
             editFolderForm.action = `/drive/${editBtn.dataset.folderId}/folder/edit`;
+            editFolderInput.value = editBtn.dataset.folderName;
+
+            editFolderInput.focus();
+            editFolderInput.select();
           });
         });
       }
