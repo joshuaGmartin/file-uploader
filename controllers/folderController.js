@@ -44,6 +44,7 @@ module.exports.postEditFolder = [
   validateUser,
   async function (req, res) {
     const folderId = req.params.folderId; // this is the edit folder id (child of current page's folder)
+
     const editFolder = await folder.findByFolderID(folderId);
     const parentId = await folder.getParentId(folderId); // current page folder id
     const errors = validationResult(req);

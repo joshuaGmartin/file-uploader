@@ -56,6 +56,7 @@ module.exports.editFolderName = async function (folderId, folderName) {
 };
 
 module.exports.getParentId = async function (folderId) {
-  const parentId = await module.exports.findByFolderID(folderId).parentId;
+  const parentId = (await module.exports.findByFolderID(folderId)).parentId;
+
   return parentId ? parentId : "root";
 };
