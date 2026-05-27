@@ -34,6 +34,6 @@ model Folder {
   ownerId Int
 
   parentId Int?
-  parent   Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  parent   Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
   children Folder[] @relation("FolderHierarchy")
 }

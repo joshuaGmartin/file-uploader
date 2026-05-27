@@ -60,3 +60,20 @@ module.exports.getParentId = async function (folderId) {
 
   return parentId ? parentId : "root";
 };
+
+module.exports.deleteFolder = async function (folderId, ownerId) {
+  if (folderId === "root") {
+    return await prisma.folder.deleteMany({
+      where: {
+        ownerId: Number(ownerId),
+        parentId: null, // cascades down from here
+      },
+    });
+  }
+
+  return await prisma.folder.delete({
+    where: {
+      id: Number(folderId),
+    },
+  });
+};

@@ -77,3 +77,20 @@ module.exports.postEditFolder = [
     res.redirect("/drive/" + req.body.currentFolderId);
   },
 ];
+
+module.exports.postDeleteFolder = async function (req, res) {
+  const folderId = req.params.folderId; // this is the edit folder id (not necessarily the same as current page folder id)
+
+  // if deleting current page folder, redirect to parent folder. Else stay on same page
+  let redirectId = req.body.currentFolderId;
+  if (folderId === req.body.currentFolderId && folderId !== "root") {
+    // caveat for root page (no parent)
+    redirectId = await folder.getParentId(folderId);
+  }
+
+  // can't delete folder before needing to check parent
+
+  await folder.deleteFolder(folderId, req.user.id);
+
+  res.redirect("/drive/" + redirectId);
+};
