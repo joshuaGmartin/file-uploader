@@ -21,6 +21,7 @@ module.exports.postCreateFolder = [
       the errors.ejs call above each corresponding form. Also allows the use of modal
       name in the errors rendering
       */
+      //  save in session to persist popup on error
       req.session.modal = "createFolder";
       req.session.errors = {
         [req.session.modal]: errors.array(),
@@ -43,10 +44,8 @@ module.exports.postCreateFolder = [
 module.exports.postEditFolder = [
   validateUser,
   async function (req, res) {
-    const folderId = req.params.folderId; // this is the edit folder id (child of current page's folder)
-
+    const folderId = req.params.folderId; // this is the edit folder id (not necessarily the same as current page folder id)
     const editFolder = await folder.findByFolderID(folderId);
-    const parentId = await folder.getParentId(folderId); // current page folder id
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -58,6 +57,7 @@ module.exports.postEditFolder = [
       the errors.ejs call above each corresponding form. Also allows the use of modal
       name in the errors rendering
       */
+      //  save in session to persist popup on error
       req.session.modal = "editFolder";
       req.session.modalFolderId = folderId;
       req.session.modalValues = { folderName: editFolder.name };
@@ -66,7 +66,7 @@ module.exports.postEditFolder = [
       };
 
       return req.session.save(() => {
-        res.redirect("/drive/" + parentId);
+        res.redirect("/drive/" + req.body.currentFolderId);
       });
     }
 
@@ -74,8 +74,6 @@ module.exports.postEditFolder = [
 
     await folder.editFolderName(folderId, folderName);
 
-    res.redirect(
-      "/drive/" + parentId, // root folder parentId is null
-    );
+    res.redirect("/drive/" + req.body.currentFolderId);
   },
 ];

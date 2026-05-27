@@ -1,5 +1,6 @@
 -update to esm?
 -owner of folder check
+  --and exist check
 -addEventListener for drive editFolder popup
   -close and modal styling
     -close should be redirect to curr page to reset modal data

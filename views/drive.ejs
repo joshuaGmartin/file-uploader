@@ -13,18 +13,33 @@
     <main>
       <h2>my drive</h2>
 
+      <!-- current path -->
       <div class="row gap-s">
-        <b>Current Path:</b>
+        <b>Location:</b>
         <span class="row">
-          <a href="/drive/root">root</a> <%
-          locals.parentFolders.forEach((parentFolder) => { %>/<a
-            href="/drive/<%= parentFolder.id %>"
-            ><%= parentFolder.name %></a
-          >
+          <a href="/drive/root">root</a>
+          <% locals.parentFolders.forEach((parentFolder) => { %> /
+          <a href="/drive/<%= parentFolder.id %>"> <%= parentFolder.name %> </a>
           <% }) %>
         </span>
       </div>
 
+      <!-- current folder -->
+      <div>
+        <b>Folder: </b>
+        <span>
+          <%= locals.pageTitle %>
+        </span>
+        <button
+          class="edit-folder-button"
+          data-folder-id="<%= locals.folderId %>"
+          data-folder-name="<%= locals.pageTitle %>"
+        >
+          Edit
+        </button>
+      </div>
+
+      <!-- child folders -->
       <div>
         <h3>Folders</h3>
         <ul>
