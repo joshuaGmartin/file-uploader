@@ -52,8 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // =======================================
+    // focus on first input
+    // =======================================
+    function focusSelectInput() {
+      const firstError = document.querySelector(".error-list-item"); // only need first to focus/select on
+
+      // if error, get data-error-type (lines up with input name)
+      if (firstError) {
+        const focusInput = document.querySelector(
+          `input[name="${firstError.dataset.errorType}"]`,
+        );
+
+        focusInput.focus();
+        focusInput.select();
+      } else {
+        const focusInput = document.querySelector("input"); // else focus on first input
+        focusInput.focus();
+      }
+    }
+
     showPassword();
     fillDemoPassword();
+    focusSelectInput();
   }
 
   // ============================================================================

@@ -8,10 +8,17 @@ async function verifyCallback(username, password, done) {
     const userMatch = await user.findByUsername(username);
 
     if (!userMatch)
-      return done(null, false, { message: "Username does not exist" });
+      return done(null, false, {
+        msg: "Username does not exist",
+        path: "username", // make like validator errors, for error handle UX
+      });
 
     const isValid = await validatePassword(password, userMatch.password);
-    if (!isValid) return done(null, false, { message: "Incorrect password" });
+    if (!isValid)
+      return done(null, false, {
+        msg: "Incorrect password",
+        path: "password", // make like validator errors, for error handle UX
+      });
 
     return done(null, userMatch);
   } catch (err) {

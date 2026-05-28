@@ -10,4 +10,7 @@ driveRouter.get(
 
 driveRouter.use("/:folderId/folder", folderRouter);
 
+// otherwise, redirect to root
+driveRouter.use("/", (req, res) => res.redirect("/drive/root"));
+
 module.exports = driveRouter;

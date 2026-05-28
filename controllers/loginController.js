@@ -16,7 +16,7 @@ const auth = (req, res, next) =>
 
     if (!user) {
       const values = req.body;
-      const errors = { msg: info.message }; // convert authentication failure to error display
+      const errors = { msg: info.msg, path: info.path }; // convert authentication failure to error display
 
       return res.status(401).render("login", {
         errors: [errors],

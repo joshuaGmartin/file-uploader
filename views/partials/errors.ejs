@@ -4,7 +4,9 @@
 <% if(errors[locals.modal]) { %>
 <ul>
   <% errors[locals.modal].forEach(error => { %>
-  <li><%= error.msg %></li>
+  <li class="error-list-item" data-error-type="<%= error.path %>">
+    <%= error.msg %>
+  </li>
   <% }); %>
 </ul>
 
@@ -13,7 +15,9 @@
 <% } else if (Array.isArray(errors)) { %>
 <ul>
   <% errors.forEach(error => { %>
-  <li><%= error.msg %></li>
+  <li class="error-list-item" data-error-type="<%= error.path %>">
+    <%= error.msg %>
+  </li>
   <% }); %>
 </ul>
 <% } %>
