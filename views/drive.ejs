@@ -156,8 +156,14 @@
       </div>
 
       <button id="create-folder-button">Add Folder</button>
-      <form action="" enctype="multipart/form-data">
-        <input type="file" multiple />
+
+      <form
+        action="/drive/<%= locals.folderId %>/file/create"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="uploadFiles" multiple required />
+        <button type="submit">Add file</button>
       </form>
 
       <%- include("partials/modals/create-folder") %>
