@@ -35,12 +35,12 @@ model Folder {
   lastUpdated DateTime @updatedAt
   createdAt   DateTime @default(now())
 
-  owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
 
   parentId Int?
-  parent   Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children Folder[] @relation("FolderHierarchy")
+  parent   Folder?  @relation("ParentChildFolder", fields: [parentId], references: [id], onDelete: Cascade)
+  children Folder[] @relation("ParentChildFolder")
 
   files File[]
 
@@ -59,8 +59,8 @@ model File {
   lastUpdated DateTime @updatedAt
   createdAt   DateTime @default(now())
 
-  owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
 
   folderId Int?
   folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)

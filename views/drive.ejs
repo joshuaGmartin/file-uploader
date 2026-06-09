@@ -156,18 +156,11 @@
       </div>
 
       <button id="create-folder-button">Add Folder</button>
-
-      <form
-        action="/drive/<%= locals.folderId %>/file/create"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <input type="file" name="uploadFiles" multiple required />
-        <button type="submit">Add file</button>
-      </form>
+      <button id="add-files-button">Add Files</button>
 
       <%- include("partials/modals/create-folder") %>
       <%- include("partials/modals/edit-folder") %>
+      <%- include("partials/modals/add-files") %>
     </main>
   </body>
 </html>
@@ -188,6 +181,10 @@
 
       editFolderInput.focus();
       editFolderInput.select();
+    }
+    if ("<%= locals.modal %>" === "addFiles") {
+      const addFilesModal = document.getElementById("add-files-modal");
+      addFilesModal.style.display = "block";
     }
   });
 </script>

@@ -2,9 +2,7 @@
 <% const formAction = locals.modalFolderId ? `/drive/${locals.modalFolderId}/folder/edit` : "" %>
 <form action="<%= formAction %>" method="post" id="edit-folder-form">
   <h2>Edit folder</h2>
-  <% if (locals.modal === "editFolder") { %>
-  <%- include("../../partials/errors") %>
-  <% } %>
+  <%- include("../errors") %>
   <label for="folderName">
     <!-- value set in js -->
     Folder name:
