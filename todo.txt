@@ -1,3 +1,8 @@
+now: 
+-add file display to /drive
+
+
+later:
 -update to esm?
 -owner of folder check
   --and exist check
@@ -6,7 +11,8 @@
     -close should be redirect to curr page to reset modal data
 -focus on login input
 -add files
-
+-need check file ownership (or shareable)
+  -make shareable field in file schema
 
 
 

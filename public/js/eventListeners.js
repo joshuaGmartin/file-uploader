@@ -129,7 +129,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // =======================================
+    // add folder controls
+    // =======================================
+    function addFileControls() {
+      const addFilesButton = document.getElementById("add-files-button");
+
+      if (addFilesButton) {
+        const addFilesModal = document.getElementById("add-files-modal");
+
+        addFilesButton.addEventListener("click", () => {
+          addFilesModal.style.display = "block";
+        });
+      }
+    }
+
     createFolderControls();
     editFolderControls();
+    addFileControls();
   }
 });

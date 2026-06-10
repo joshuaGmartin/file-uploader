@@ -1,4 +1,5 @@
 const multer = require("multer");
+const file = require("../models/file");
 
 const MAX_SIZE = 100 * 1024; // 100 KB
 const MAX_FILES = 2;
@@ -17,13 +18,14 @@ module.exports.postCreateFile = function (req, res) {
   const folderId = req.params.folderId; // current page folder id
 
   /* multer only passes errors upon upload failure, 
-  forcing the need to validate and store in one function */
+  forcing the need to validate, store, and handle errors in one function */
+
   let errors = []; // errors.ejs expects array of objects with msg and path keys
-  upload(req, res, function (err) {
+
+  upload(req, res, async function (err) {
     if (err) {
       // if (err instanceof multer.MulterError) {
       let msg;
-
       switch (err.code) {
         case "LIMIT_FILE_SIZE":
           msg = "File(s) are over the size limit";
@@ -43,16 +45,21 @@ module.exports.postCreateFile = function (req, res) {
       });
     }
 
-    /*  
-need:
--add modal to add fileAdd
--add eventlistener to       <button id="add-files-button">Add Files</button>
--add errors to fileAdd
--render page with errors here (check folderAdd controller)
+    // handle errors
+    if (errors.length > 0) {
+      req.session.modal = "addFiles";
+      req.session.errors = {
+        [req.session.modal]: errors,
+      };
 
- */
+      // Bug fix: force save session; timing issue
+      return req.session.save(() => {
+        res.redirect("/drive/" + folderId);
+      });
+    }
 
-    // .files added to req with upload()
+    // if no errors, add to db
+    await file.addFiles(req.files, req.user.id, folderId);
     return res.redirect("/drive/" + folderId);
   });
 };

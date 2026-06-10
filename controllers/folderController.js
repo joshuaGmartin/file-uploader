@@ -1,5 +1,4 @@
 const { body, matchedData, validationResult } = require("express-validator");
-const driveController = require("../controllers/driveController");
 const folder = require("../models/folder");
 
 const validateFolder = [
