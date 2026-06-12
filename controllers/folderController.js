@@ -76,7 +76,7 @@ module.exports.postCreateFolder = [
 
     await folder.createFolder(folderName, req.user.id, folderId);
 
-    res.redirect("/drive/folder/" + folderId);
+    return res.redirect("/drive/folder/" + folderId);
   },
 ];
 

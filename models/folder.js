@@ -62,13 +62,24 @@ module.exports.getParentId = async function (folderId) {
 };
 
 module.exports.deleteFolder = async function (folderId, ownerId) {
+  // root files do not cascade upon delete (they belong to "no" folder)
+  // all other files will cascade upon their folder deletion
   if (folderId === "root") {
-    return await prisma.folder.deleteMany({
+    await prisma.folder.deleteMany({
       where: {
         ownerId: Number(ownerId),
-        parentId: null, // cascades down from here
+        parentId: null, // folder deletion cascades down from here
       },
     });
+
+    await prisma.file.deleteMany({
+      where: {
+        ownerId: Number(ownerId),
+        folderId: null,
+      },
+    });
+
+    return;
   }
 
   return await prisma.folder.delete({

@@ -14,7 +14,8 @@ const upload = multer({
   },
 }).array(path);
 
-module.exports.postCreateFile = function (req, res) {
+// addFile is always called form /folder route
+module.exports.postAddFile = function (req, res) {
   const folderId = req.params.folderId; // current page folder id
 
   /* multer only passes errors upon upload failure, 
@@ -54,13 +55,14 @@ module.exports.postCreateFile = function (req, res) {
 
       // Bug fix: force save session; timing issue
       return req.session.save(() => {
-        res.redirect("/drive/" + folderId);
+        res.redirect("/drive/folder/" + folderId);
       });
     }
 
     // if no errors, add to db
     await file.addFiles(req.files, req.user.id, folderId);
-    return res.redirect("/drive/" + folderId);
+
+    return res.redirect("/drive/folder/" + folderId);
   });
 };
 
