@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
           editBtn.addEventListener("click", () => {
             editFolderModal.style.display = "block";
 
-            editFolderForm.action = `/drive/${editBtn.dataset.folderId}/folder/edit`;
+            editFolderForm.action = `/drive/folder/${editBtn.dataset.folderId}/edit`;
             editFolderInput.value = editBtn.dataset.folderName;
 
             editFolderInput.focus();

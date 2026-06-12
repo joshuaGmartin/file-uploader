@@ -17,14 +17,14 @@ module.exports.addFiles = async function (files, ownerId, folderId) {
 
     return;
   });
+};
 
-  // return await prisma.folder.create({
-  //   data: {
-  //     name: folderName,
-  //     ownerId,
-  //     parentId: isRoot ? null : Number(parentId),
-  //   },
-  // });
+module.exports.getFiles = async function (folderId) {
+  const isRoot = folderId === "root";
+
+  return await prisma.file.findMany({
+    where: { folderId: isRoot ? null : Number(folderId) },
+  });
 };
 
 // module.exports.findByFolderID = async function (id) {

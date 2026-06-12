@@ -1,6 +1,6 @@
-<!-- if click edit btn, action set in js. If popup persist, action is set here (on error, modalFolderId is saved) -->
-<% const formAction = locals.modalFolderId ? `/drive/${locals.modalFolderId}/folder/edit` : "" %>
-<form action="<%= formAction %>" method="post" id="edit-folder-form">
+<!-- if click edit btn, action set in js. If popup persist, action is set here (on error, modalFileId is saved) -->
+<% const formAction = locals.modalFileId ? `/drive/${locals.folderId}/folder/edit` : "" %>
+<form action="<%= formAction %>" method="post" id="edit-file-form">
   <h2>Edit folder</h2>
   <%- include("../errors") %>
   <label for="folderName">

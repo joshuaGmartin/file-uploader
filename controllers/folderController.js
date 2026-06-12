@@ -1,9 +1,49 @@
 const { body, matchedData, validationResult } = require("express-validator");
 const folder = require("../models/folder");
+const file = require("../models/file");
 
 const validateFolder = [
   body("folderName").trim().notEmpty().withMessage("Must include folder name"),
 ];
+
+async function getDriveData(folderId, userId) {
+  const childFolders = await folder.getChildren(folderId, userId);
+  const parentFolders = await folder.getParents(folderId);
+  const files = await file.getFiles(folderId);
+
+  let pageTitle;
+  if (folderId === "root") pageTitle = "root";
+  else pageTitle = (await folder.findByFolderID(folderId)).name;
+
+  return { pageTitle, folderId, childFolders, parentFolders, files };
+}
+
+function handlePopupData(req) {
+  // save popup data for this render
+  const modal = req.session.modal || null;
+  const modalFolderId = req.session.modalFolderId || null;
+  const modalValues = req.session.modalValues || null;
+  const errors = req.session.errors || null;
+
+  // clear popup data from session
+  req.session.modal = null;
+  req.session.modalFolderId = null;
+  req.session.modalValues = null;
+  req.session.errors = null;
+
+  return { modal, modalFolderId, modalValues, errors };
+}
+
+module.exports.getDriveFolder = async function (req, res) {
+  //need folder no exist redirect?
+  const driveData = await getDriveData(req.params.folderId, req.user.id);
+  const popupData = handlePopupData(req);
+
+  res.render("drive", {
+    ...driveData,
+    ...popupData,
+  });
+};
 
 module.exports.postCreateFolder = [
   validateFolder,
@@ -28,7 +68,7 @@ module.exports.postCreateFolder = [
 
       // Bug fix: force save session; timing issue
       return req.session.save(() => {
-        res.redirect("/drive/" + folderId);
+        res.redirect("/drive/folder/" + folderId);
       });
     }
 
@@ -36,7 +76,7 @@ module.exports.postCreateFolder = [
 
     await folder.createFolder(folderName, req.user.id, folderId);
 
-    res.redirect("/drive/" + folderId);
+    res.redirect("/drive/folder/" + folderId);
   },
 ];
 
@@ -65,7 +105,7 @@ module.exports.postEditFolder = [
       };
 
       return req.session.save(() => {
-        res.redirect("/drive/" + req.body.currentFolderId);
+        res.redirect("/drive/folder/" + req.body.currentFolderId);
       });
     }
 
@@ -73,7 +113,7 @@ module.exports.postEditFolder = [
 
     await folder.editFolderName(folderId, folderName);
 
-    res.redirect("/drive/" + req.body.currentFolderId);
+    res.redirect("/drive/folder/" + req.body.currentFolderId);
   },
 ];
 
@@ -82,14 +122,13 @@ module.exports.postDeleteFolder = async function (req, res) {
 
   // if deleting current page folder, redirect to parent folder. Else stay on same page
   let redirectId = req.body.currentFolderId;
+  // caveat for root page (no parent)
   if (folderId === req.body.currentFolderId && folderId !== "root") {
-    // caveat for root page (no parent)
     redirectId = await folder.getParentId(folderId);
   }
 
   // can't delete folder before needing to check parent
-
   await folder.deleteFolder(folderId, req.user.id);
 
-  res.redirect("/drive/" + redirectId);
+  res.redirect("/drive/folder/" + redirectId);
 };

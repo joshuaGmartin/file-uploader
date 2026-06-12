@@ -1,5 +1,8 @@
 now: 
 -add file display to /drive
+-refactor routes to drive/folder/[folderId]/{create}
+-refactor routes to drive/file/[folderId]/{create}
+-check error/no-permit routes
 
 
 later:
@@ -12,7 +15,6 @@ later:
 -focus on login input
 -add files
 -need check file ownership (or shareable)
-  -make shareable field in file schema
 
 
 

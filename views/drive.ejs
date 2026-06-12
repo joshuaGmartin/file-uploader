@@ -17,9 +17,12 @@
       <div class="row gap-s">
         <b>Location:</b>
         <span class="row">
-          <a href="/drive/root" class="underline-hover">root</a>
+          <a href="/drive/folder/root" class="underline-hover">root</a>
           <% locals.parentFolders.forEach((parentFolder) => { %> /
-          <a href="/drive/<%= parentFolder.id %>" class="underline-hover">
+          <a
+            href="/drive/folder/<%= parentFolder.id %>"
+            class="underline-hover"
+          >
             <%= parentFolder.name %>
           </a>
           <% }) %>
@@ -28,7 +31,7 @@
 
       <!-- current folder -->
       <div class="row gap-s">
-        <b>Folder: </b>
+        <b>Current Folder: </b>
         <span>
           <%= locals.pageTitle %>
         </span>
@@ -49,7 +52,7 @@
 
           <!-- delete -->
           <form
-            action="/drive/<%= locals.folderId %>/folder/delete"
+            action="/drive/folder/<%= locals.folderId %>/delete"
             method="post"
           >
             <input
@@ -75,7 +78,7 @@
           <% if (locals.folderId === "root") { %>
           <!-- delete -->
           <form
-            action="/drive/<%= locals.folderId %>/folder/delete"
+            action="/drive/folder/<%= locals.folderId %>/delete"
             method="post"
           >
             <input
@@ -102,14 +105,14 @@
 
       <!-- child folders -->
       <div>
-        <h3>Folders</h3>
+        <h3>Sub Folders</h3>
         <ul>
           <% if (locals.childFolders) { %>
 
           <% locals.childFolders.forEach((childFolder) => { %>
           <li>
             <div class="row gap-s">
-              <a href="/drive/<%= childFolder.id %>">
+              <a href="/drive/folder/<%= childFolder.id %>">
                 <%= childFolder.name %>
               </a>
               —
@@ -126,7 +129,7 @@
 
                 <!-- delete folder -->
                 <form
-                  action="/drive/<%= childFolder.id %>/folder/delete"
+                  action="/drive/folder/<%= childFolder.id %>/delete"
                   method="post"
                 >
                   <input
@@ -155,12 +158,41 @@
         </ul>
       </div>
 
+      <!-- files -->
+      <div>
+        <h3>Files</h3>
+        <ul>
+          <% if (locals.files) { %>
+          <% files.forEach((file)=> { %>
+
+          <li>
+            <div class="row gap-s">
+              <%= file.name %>
+              <!-- tools -->
+              <div class="row gap-s">
+                <!-- edit file -->
+                <button
+                  class="edit-file-button"
+                  data-file-id="<%= file.id %>"
+                  data-file-name="<%= file.name %>"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          </li>
+          <% }) %>
+          <% } %>
+        </ul>
+      </div>
+
       <button id="create-folder-button">Add Folder</button>
       <button id="add-files-button">Add Files</button>
 
       <%- include("partials/modals/create-folder") %>
       <%- include("partials/modals/edit-folder") %>
       <%- include("partials/modals/add-files") %>
+      <%- include("partials/modals/edit-file") %>
     </main>
   </body>
 </html>
