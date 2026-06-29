@@ -127,7 +127,6 @@ module.exports.postDeleteFolder = async function (req, res) {
     redirectId = await folder.getParentId(folderId);
   }
 
-  // can't delete folder before needing to check parent
   await folder.deleteFolder(folderId, req.user.id);
 
   res.redirect("/drive/folder/" + redirectId);

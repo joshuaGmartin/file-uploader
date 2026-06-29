@@ -1,6 +1,6 @@
 <!-- locals implies data may not exist -->
 <% if (locals.errors) { // skip if errors no exist %>
-<!-- checks if errors contains a sub-object -->
+<!-- checks if errors contains a sub-object (nested object implies modal)-->
 <% if(errors[locals.modal]) { %>
 <ul>
   <% errors[locals.modal].forEach(error => { %>

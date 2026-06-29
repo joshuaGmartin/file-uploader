@@ -158,7 +158,7 @@
         </ul>
       </div>
 
-      <!-- files -->
+      <!-- ==================== files ==================== -->
       <div>
         <h3>Files</h3>
         <ul>
@@ -178,6 +178,25 @@
                 >
                   Edit
                 </button>
+                <!-- delete file -->
+                <form action="/drive/file/<%= file.id %>/delete" method="post">
+                  <input
+                    type="text"
+                    name="currentFolderId"
+                    value="<%= locals.folderId %>"
+                    hidden
+                  />
+                  <button
+                    type="submit"
+                    onclick="
+                      return confirm(
+                        'Are you sure you want to delete file: &quot;<%= file.name %>&quot;?',
+                      );
+                    "
+                  >
+                    Delete
+                  </button>
+                </form>
               </div>
             </div>
           </li>
@@ -198,6 +217,7 @@
 </html>
 
 <script>
+  // modal control
   document.addEventListener("DOMContentLoaded", () => {
     if ("<%= locals.modal %>" === "createFolder") {
       const createFolderModal = document.getElementById("create-folder-modal");
@@ -216,6 +236,10 @@
     }
     if ("<%= locals.modal %>" === "addFiles") {
       const addFilesModal = document.getElementById("add-files-modal");
+      addFilesModal.style.display = "block";
+    }
+    if ("<%= locals.modal %>" === "editFile") {
+      const addFilesModal = document.getElementById("edit-file-modal");
       addFilesModal.style.display = "block";
     }
   });

@@ -62,7 +62,8 @@ app.use((req, res, next) => {
 
 //debug
 // app.use((req, res, next) => {
-//   console.log(res.locals);
+//   // console.log(res.locals);
+//   // console.log(req.user);
 //   next();
 // });
 

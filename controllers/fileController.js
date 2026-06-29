@@ -1,7 +1,8 @@
+const { body, matchedData, validationResult } = require("express-validator");
 const multer = require("multer");
 const file = require("../models/file");
 
-const MAX_SIZE = 100 * 1024; // 100 KB
+const MAX_SIZE = 200 * 1024; // 100 KB
 const MAX_FILES = 2;
 const path = "uploadFiles";
 const dest = "uploads/";
@@ -13,6 +14,10 @@ const upload = multer({
     fileSize: MAX_SIZE,
   },
 }).array(path);
+
+const validateFile = [
+  body("fileName").trim().notEmpty().withMessage("Must include file name"),
+];
 
 // addFile is always called form /folder route
 module.exports.postAddFile = function (req, res) {
@@ -59,63 +64,80 @@ module.exports.postAddFile = function (req, res) {
       });
     }
 
-    // if no errors, add to db
+    // if no errors, write to db
     await file.addFiles(req.files, req.user.id, folderId);
 
     return res.redirect("/drive/folder/" + folderId);
   });
 };
 
-// module.exports.postEditFolder = [
-//   // validateFile,
-//   async function (req, res) {
-//     const folderId = req.params.folderId; // this is the edit folder id (not necessarily the same as current page folder id)
-//     const editFolder = await folder.findByFolderID(folderId);
-//     const errors = validationResult(req);
+module.exports.postEditFile = [
+  validateFile,
+  async function (req, res) {
+    const fileId = req.params.fileId;
+    const editFile = await file.findByFileID(fileId);
+    const errors = validationResult(req);
 
-//     if (!errors.isEmpty()) {
-//       // const values = req.body; // not useful here; need original value, not incorrect value, in this case
+    if (!errors.isEmpty()) {
+      // const values = req.body; // not useful here; need original value, not incorrect value, in this case
 
-//       /*
-//       existence of errors implies modal needs to remain open. Thus, reuse the modal
-//       name as the errors sub-object key name and check for modal name matching in
-//       the errors.ejs call above each corresponding form. Also allows the use of modal
-//       name in the errors rendering
-//       */
-//       //  save in session to persist popup on error
-//       req.session.modal = "editFolder";
-//       req.session.modalFolderId = folderId;
-//       req.session.modalValues = { folderName: editFolder.name };
-//       req.session.errors = {
-//         [req.session.modal]: errors.array(),
-//       };
+      /*
+      existence of errors implies modal needs to remain open. Thus, reuse the modal
+      name as the errors sub-object key name and check for modal name matching in
+      the errors.ejs call above each corresponding form. Also allows the use of modal
+      name in the errors rendering
+      */
+      //  save in session to persist popup on error
+      req.session.modal = "editFile";
+      req.session.modalFileId = fileId;
+      req.session.modalValues = { fileName: editFile.name };
+      req.session.errors = {
+        [req.session.modal]: errors.array(),
+      };
 
-//       return req.session.save(() => {
-//         res.redirect("/drive/" + req.body.currentFolderId);
-//       });
-//     }
+      // check if file edit req is on folder page
+      if (req.body.currentFolderId) {
+        return req.session.save(() => {
+          res.redirect("/drive/folder/" + req.body.currentFolderId);
+        });
+      }
+      // redirect to file page if not
+      else {
+        // return req.session.save(() => {
+      }
+    }
 
-//     const { folderName } = matchedData(req);
+    const { fileName } = matchedData(req);
 
-//     await folder.editFolderName(folderId, folderName);
+    await file.editFileName(fileId, fileName);
 
-//     res.redirect("/drive/" + req.body.currentFolderId);
-//   },
-// ];
+    // check if file edit req is on folder page
+    if (req.body.currentFolderId) {
+      return req.session.save(() => {
+        res.redirect("/drive/folder/" + req.body.currentFolderId);
+      });
+    }
+    // redirect to file page if not
+    else {
+      // return req.session.save(() => {
+    }
+  },
+];
 
-// module.exports.postDeleteFolder = async function (req, res) {
-//   const folderId = req.params.folderId; // this is the edit folder id (not necessarily the same as current page folder id)
+module.exports.postDeleteFile = async function (req, res) {
+  const fileId = req.params.fileId;
 
-//   // if deleting current page folder, redirect to parent folder. Else stay on same page
-//   let redirectId = req.body.currentFolderId;
-//   if (folderId === req.body.currentFolderId && folderId !== "root") {
-//     // caveat for root page (no parent)
-//     redirectId = await folder.getParentId(folderId);
-//   }
+  // if deleting file on parent page, stay on current page. Else redirect to parent folder
+  let redirectId;
+  if (req.body.currentFolderId) redirectId = req.body.currentFolderId;
+  else {
+    const editFile = await file.findByFileID(fileId);
+    redirectId = editFile.folderId;
+  }
+  // caveat for root page (no folderId)
+  if (redirectId === null) redirectId = "root";
 
-//   // can't delete folder before needing to check parent
+  await file.deleteFile(fileId);
 
-//   await folder.deleteFolder(folderId, req.user.id);
-
-//   res.redirect("/drive/" + redirectId);
-// };
+  res.redirect("/drive/folder/" + redirectId);
+};

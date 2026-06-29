@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =======================================
-    // add folder controls
+    // add file controls
     // =======================================
     function addFileControls() {
       const addFilesButton = document.getElementById("add-files-button");
@@ -144,8 +144,34 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // =======================================
+    // edit file controls
+    // =======================================
+    function editFileControls() {
+      const editFileBtns = document.querySelectorAll(".edit-file-button");
+
+      if (editFileBtns) {
+        const editFileModal = document.getElementById("edit-file-modal");
+        const editFileForm = document.getElementById("edit-file-form");
+        const editFileInput = editFileForm.querySelector("input#fileName");
+
+        editFileBtns.forEach((editBtn) => {
+          editBtn.addEventListener("click", () => {
+            editFileModal.style.display = "block";
+
+            editFileForm.action = `/drive/file/${editBtn.dataset.fileId}/edit`;
+            editFileInput.value = editBtn.dataset.fileName;
+
+            editFileInput.focus();
+            editFileInput.select();
+          });
+        });
+      }
+    }
+
     createFolderControls();
     editFolderControls();
     addFileControls();
+    editFileControls();
   }
 });

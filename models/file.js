@@ -27,12 +27,28 @@ module.exports.getFiles = async function (folderId) {
   });
 };
 
-// module.exports.findByFolderID = async function (id) {
-//   return await prisma.folder.findUnique({
-//     where: { id: Number(id) },
-//     include: { children: true },
-//   });
-// };
+module.exports.findByFileID = async function (id) {
+  return await prisma.file.findUnique({
+    where: { id: Number(id) },
+  });
+};
+
+module.exports.editFileName = async function (fileId, fileName) {
+  return await prisma.file.update({
+    where: { id: Number(fileId) },
+    data: { name: fileName },
+  });
+};
+
+module.exports.deleteFile = async function (fileId) {
+  await prisma.file.delete({
+    where: {
+      id: Number(fileId),
+    },
+  });
+
+  return;
+};
 
 // module.exports.getChildren = async function (folderId, userId) {
 //   if (folderId === "root") {
@@ -63,28 +79,10 @@ module.exports.getFiles = async function (folderId) {
 //   return rawParents;
 // };
 
-// module.exports.editFolderName = async function (folderId, folderName) {
-//   return await prisma.folder.update({
-//     where: { id: Number(folderId) },
-//     data: { name: folderName },
-//   });
-// };
-
 // module.exports.getParentId = async function (folderId) {
 //   const parentId = (await module.exports.findByFolderID(folderId)).parentId;
 
 //   return parentId ? parentId : "root";
-// };
-
-// module.exports.deleteFolder = async function (folderId, ownerId) {
-//   if (folderId === "root") {
-//     return await prisma.folder.deleteMany({
-//       where: {
-//         ownerId: Number(ownerId),
-//         parentId: null, // cascades down from here
-//       },
-//     });
-//   }
 
 //   return await prisma.folder.delete({
 //     where: {
