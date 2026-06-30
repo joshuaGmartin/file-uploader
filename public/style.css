@@ -133,7 +133,7 @@ main {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .underline-hover {
@@ -141,6 +141,48 @@ main {
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  top: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+
+  .modal {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    margin-top: calc(0.25 * 100vh);
+    padding: var(--spacing-l);
+
+    background-color: var(--secondary-bg);
+
+    .modal-close {
+      margin: var(--spacing-s);
+
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      &:hover {
+        cursor: pointer;
+        color: var(--secondary-color);
+      }
+    }
+
+    .error-list {
+      margin-left: var(--spacing-l);
+    }
   }
 }
 

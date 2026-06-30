@@ -221,13 +221,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     if ("<%= locals.modal %>" === "createFolder") {
       const createFolderModal = document.getElementById("create-folder-modal");
-      createFolderModal.style.display = "block";
+      createFolderModal.classList.toggle("hidden");
 
       createFolderModal.querySelector("input#folderName").focus();
     }
     if ("<%= locals.modal %>" === "editFolder") {
       const editFolderModal = document.getElementById("edit-folder-modal");
-      editFolderModal.style.display = "block";
+      editFolderModal.classList.toggle("hidden");
 
       const editFolderInput = editFolderModal.querySelector("input#folderName");
 
@@ -236,11 +236,11 @@
     }
     if ("<%= locals.modal %>" === "addFiles") {
       const addFilesModal = document.getElementById("add-files-modal");
-      addFilesModal.style.display = "block";
+      addFilesModal.classList.toggle("hidden");
     }
     if ("<%= locals.modal %>" === "editFile") {
-      const addFilesModal = document.getElementById("edit-file-modal");
-      addFilesModal.style.display = "block";
+      const editFileModal = document.getElementById("edit-file-modal");
+      editFileModal.classList.toggle("hidden");
     }
   });
 </script>

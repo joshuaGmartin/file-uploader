@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         createFolderButton.addEventListener("click", () => {
-          createFolderModal.style.display = "block";
+          createFolderModal.classList.toggle("hidden");
 
           createFolderModal.querySelector("input#folderName").focus();
         });
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         editFolderBtns.forEach((editBtn) => {
           editBtn.addEventListener("click", () => {
-            editFolderModal.style.display = "block";
+            editFolderModal.classList.toggle("hidden");
 
             editFolderForm.action = `/drive/folder/${editBtn.dataset.folderId}/edit`;
             editFolderInput.value = editBtn.dataset.folderName;
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const addFilesModal = document.getElementById("add-files-modal");
 
         addFilesButton.addEventListener("click", () => {
-          addFilesModal.style.display = "block";
+          addFilesModal.classList.toggle("hidden");
         });
       }
     }
@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editFileBtns.forEach((editBtn) => {
           editBtn.addEventListener("click", () => {
             editFileModal.style.display = "block";
+            editFileModal.classList.toggle("hidden");
 
             editFileForm.action = `/drive/file/${editBtn.dataset.fileId}/edit`;
             editFileInput.value = editBtn.dataset.fileName;
@@ -169,9 +170,55 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    function modalExit() {
+      const modalOverlays = document.querySelectorAll(".modal-overlay");
+
+      if (modalOverlays) {
+        modalOverlays.forEach((overlay) => {
+          overlay.addEventListener("click", (e) => {
+            // allow click on modal
+            if (e.target === overlay) {
+              // need reload to reset modal data (ex: error data can carry over to another modal if no reset)
+              window.location.reload();
+            }
+          });
+        });
+      }
+
+      const modalCloseBtns = document.querySelectorAll(".modal-close");
+
+      if (modalCloseBtns) {
+        modalCloseBtns.forEach((closeBtn) => {
+          closeBtn.addEventListener("click", () => {
+            // need reload to reset modal data (ex: error data can carry over to another modal if no reset)
+            window.location.reload();
+          });
+        });
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+
+        const modals = document.querySelectorAll(".modal-overlay"); // overlay has the hidden class
+
+        // look for non-hidden (open) modal
+        const hasOpenModal = document.querySelector(
+          ".modal-overlay:not(.hidden)",
+        );
+
+        if (hasOpenModal) {
+          // let JS stack finish, then reload
+          setTimeout(() => {
+            window.location.reload();
+          }, 0);
+        }
+      });
+    }
+
     createFolderControls();
     editFolderControls();
     addFileControls();
     editFileControls();
+    modalExit();
   }
 });

@@ -2,7 +2,7 @@
 <% if (locals.errors) { // skip if errors no exist %>
 <!-- checks if errors contains a sub-object (nested object implies modal)-->
 <% if(errors[locals.modal]) { %>
-<ul>
+<ul class="error-list">
   <% errors[locals.modal].forEach(error => { %>
   <li class="error-list-item" data-error-type="<%= error.path %>">
     <%= error.msg %>
