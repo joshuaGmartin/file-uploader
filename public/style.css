@@ -62,6 +62,61 @@ main {
   align-items: center;
 }
 
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  top: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+
+  .modal {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+
+    position: relative;
+
+    margin-top: calc(0.25 * 100vh);
+    padding: var(--spacing-l);
+
+    width: 30rem;
+
+    background-color: var(--secondary-bg);
+
+    .modal-close {
+      margin: var(--spacing-s);
+
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .error-list {
+      margin-left: var(--spacing-l);
+    }
+
+    form {
+      justify-self: center;
+    }
+  }
+}
+
+.child-folders {
+  width: 30rem;
+
+  .child-folder {
+    &:hover {
+      background-color: var(--secondary-bg);
+    }
+  }
+}
+
 /* ========================================================================== */
 /* Classes */
 /* ========================================================================== */
@@ -99,6 +154,40 @@ main {
   gap: var(--spacing-xs);
 }
 
+.primary-color {
+  color: var(--primary-color);
+}
+
+.bottom-border {
+  border-bottom: 1px solid black;
+}
+
+.padding-top-s {
+  padding-top: var(--spacing-s);
+}
+
+.padding-bottom-s {
+  padding-bottom: var(--spacing-s);
+}
+
+.padding-left {
+  padding-left: var(--spacing);
+}
+
+.padding-right {
+  padding-right: var(--spacing);
+}
+
+.no-button-style {
+  background: none;
+  border: none;
+}
+
+.hover-white {
+  &:hover {
+    color: var(--secondary-color);
+  }
+}
 /* ========================================================================== */
 /* Special Classes */
 /* ========================================================================== */
@@ -141,48 +230,6 @@ main {
 
   &:hover {
     text-decoration: underline;
-  }
-}
-
-.modal-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: start;
-
-  background-color: rgba(0, 0, 0, 0.5);
-
-  position: fixed;
-  top: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-
-  .modal {
-    display: flex;
-    flex-direction: column;
-
-    position: relative;
-
-    margin-top: calc(0.25 * 100vh);
-    padding: var(--spacing-l);
-
-    background-color: var(--secondary-bg);
-
-    .modal-close {
-      margin: var(--spacing-s);
-
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      &:hover {
-        cursor: pointer;
-        color: var(--secondary-color);
-      }
-    }
-
-    .error-list {
-      margin-left: var(--spacing-l);
-    }
   }
 }
 
