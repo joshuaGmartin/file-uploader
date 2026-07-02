@@ -1,6 +1,10 @@
 <header>
-  <a href="/" class="hide-link-style">
-    <h1><%= locals.appTitle %></h1>
+  <a href="/" class="hide-link-style no-shrink">
+    <h1 class="row">
+      <% [...locals.appTitle].forEach((char) => { %>
+      <span class="hover-white"><%= char %></span>
+      <% }); %>
+    </h1>
   </a>
   <nav>
     <% if(locals.isAuth) { %>
@@ -28,7 +32,22 @@
       href="https://github.com/joshuaGmartin/file-uploader"
       target="_blank"
       rel="noopener noreferrer"
-      >Source</a
-    >
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-code-xml-icon lucide-code-xml hover-white"
+      >
+        <path d="m18 16 4-4-4-4" />
+        <path d="m6 8-4 4 4 4" />
+        <path d="m14.5 4-5 16" />
+      </svg>
+    </a>
   </nav>
 </header>

@@ -107,14 +107,26 @@ main {
   }
 }
 
-.child-folders {
-  width: 30rem;
+.child-lines {
+  width: 40rem;
 
-  .child-folder {
+  .child-line {
+    border-bottom: rgba(0, 0, 0, 0.13) solid 1px;
+
     &:hover {
       background-color: var(--secondary-bg);
     }
+
+    &:last-child {
+      border: none;
+    }
   }
+}
+
+.main-drive-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
 }
 
 /* ========================================================================== */
@@ -158,10 +170,6 @@ main {
   color: var(--primary-color);
 }
 
-.bottom-border {
-  border-bottom: 1px solid black;
-}
-
 .padding-top-s {
   padding-top: var(--spacing-s);
 }
@@ -188,6 +196,11 @@ main {
     color: var(--secondary-color);
   }
 }
+
+.no-shrink {
+  width: max-content;
+}
+
 /* ========================================================================== */
 /* Special Classes */
 /* ========================================================================== */
@@ -230,6 +243,12 @@ main {
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.lucide {
+  &:hover {
+    color: var(--secondary-color);
   }
 }
 
