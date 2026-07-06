@@ -19,6 +19,10 @@ const validateFile = [
   body("fileName").trim().notEmpty().withMessage("Must include file name"),
 ];
 
+module.exports.getFile = async function (req, res) {
+  const fileId = req.params.fileId;
+};
+
 // addFile is always called form /folder route
 module.exports.postAddFile = function (req, res) {
   const folderId = req.params.folderId; // current page folder id

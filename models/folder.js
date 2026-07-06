@@ -26,10 +26,15 @@ module.exports.getChildren = async function (folderId, userId) {
         ownerId: userId,
         parentId: null, // null parent implies root level folder
       },
+      orderBy: { name: "asc" },
     });
   }
 
-  return (await this.findByFolderID(folderId)).children;
+  const nonRootChildren = (await this.findByFolderID(folderId)).children;
+
+  nonRootChildren.sort((a, b) => a.name.localeCompare(b.name));
+
+  return nonRootChildren;
 };
 
 module.exports.getParents = async function (folderId) {

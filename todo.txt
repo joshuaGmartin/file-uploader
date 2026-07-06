@@ -1,6 +1,5 @@
 now: 
 -check error/no-permit routes
--add file-plus and folder-plus from lucide 
 
 
 later:

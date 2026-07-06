@@ -24,6 +24,7 @@ module.exports.getFiles = async function (folderId) {
 
   return await prisma.file.findMany({
     where: { folderId: isRoot ? null : Number(folderId) },
+    orderBy: { name: "asc" },
   });
 };
 
