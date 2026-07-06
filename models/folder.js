@@ -20,21 +20,20 @@ module.exports.findByFolderID = async function (id) {
 };
 
 module.exports.getChildren = async function (folderId, userId) {
+  let children;
   if (folderId === "root") {
-    return await prisma.folder.findMany({
+    children = await prisma.folder.findMany({
       where: {
         ownerId: userId,
         parentId: null, // null parent implies root level folder
       },
-      orderBy: { name: "asc" },
     });
-  }
+  } else children = (await this.findByFolderID(folderId)).children;
 
-  const nonRootChildren = (await this.findByFolderID(folderId)).children;
+  // prisma's orderBy does not allow for case-insensitive ordering
+  children.sort((a, b) => a.name.localeCompare(b.name));
 
-  nonRootChildren.sort((a, b) => a.name.localeCompare(b.name));
-
-  return nonRootChildren;
+  return children;
 };
 
 module.exports.getParents = async function (folderId) {

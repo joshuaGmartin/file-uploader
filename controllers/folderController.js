@@ -39,7 +39,7 @@ module.exports.getDriveFolder = async function (req, res) {
   const driveData = await getDriveData(req.params.folderId, req.user.id);
   const popupData = handlePopupData(req);
 
-  res.render("drive", {
+  res.render("drive/folder", {
     ...driveData,
     ...popupData,
   });

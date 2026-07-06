@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <script src="/js/eventListeners.js" defer></script>
-    <title><%= locals.pageTitle %> | <%= locals.appTitle %></title>
+    <title>folder - <%= locals.pageTitle %> | <%= locals.appTitle %></title>
   </head>
   <body>
-    <%- include("partials/header") %>
+    <%- include("../partials/header") %>
 
     <main>
       <h2>my drive</h2>
@@ -355,10 +355,10 @@
         </div>
       </div>
 
-      <%- include("partials/modals/create-folder") %>
-      <%- include("partials/modals/edit-folder") %>
-      <%- include("partials/modals/add-files") %>
-      <%- include("partials/modals/edit-file") %>
+      <%- include("../partials/modals/create-folder") %>
+      <%- include("../partials/modals/edit-folder") %>
+      <%- include("../partials/modals/add-files") %>
+      <%- include("../partials/modals/edit-file") %>
     </main>
   </body>
 </html>

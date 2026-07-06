@@ -22,10 +22,14 @@ module.exports.addFiles = async function (files, ownerId, folderId) {
 module.exports.getFiles = async function (folderId) {
   const isRoot = folderId === "root";
 
-  return await prisma.file.findMany({
+  let children = await prisma.file.findMany({
     where: { folderId: isRoot ? null : Number(folderId) },
-    orderBy: { name: "asc" },
   });
+
+  // prisma's orderBy does not allow for case-insensitive ordering
+  children.sort((a, b) => a.name.localeCompare(b.name));
+
+  return children;
 };
 
 module.exports.findByFileID = async function (id) {
