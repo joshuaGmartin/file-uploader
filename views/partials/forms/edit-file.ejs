@@ -1,5 +1,5 @@
 <!-- if click edit btn, action set in js. If popup persist, action is set here (on error, modalFileId is saved) -->
-<% const formAction = locals.modalFileId ? `/drive/${locals.fileId}/file/edit` : "" %>
+<% const formAction = locals.modalFileId ? `/drive/file/${locals.fileId}/edit` : "" %>
 <form action="<%= formAction %>" method="post" id="edit-file-form">
   <h2>Edit file</h2>
   <%- include("../errors") %>
@@ -18,7 +18,7 @@
   <input
     type="text"
     name="currentFolderId"
-    value="<%= locals.folderId %>"
+    value="<%= locals.folderId || '' %>"
     hidden
   />
   <button type="submit">Edit</button>

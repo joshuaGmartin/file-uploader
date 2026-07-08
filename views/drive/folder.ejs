@@ -11,11 +11,9 @@
     <%- include("../partials/header") %>
 
     <main>
-      <h2>my drive</h2>
-
       <!-- current path -->
-      <div class="row gap-s">
-        <b>Location:</b>
+      <div class="row gap-xs">
+        <span><b>whereabouts:</b></span>
         <span class="row">
           <a href="/drive/folder/root" class="underline-hover">root</a>
           <% locals.parentFolders.forEach((parentFolder) => { %> /
@@ -31,13 +29,12 @@
 
       <!-- current folder -->
       <div class="row gap-s">
-        <b>Current Folder: </b>
-        <span>
+        <h2>
           <%= locals.pageTitle %>
-        </span>
+        </h2>
 
         <!-- tools -->
-        <div class="row gap-s">
+        <div class="row gap-s align-center">
           <!-- no edit root -->
           <% if (locals.folderId !== "root") { %>
           <!-- edit -->
@@ -68,6 +65,7 @@
           <form
             action="/drive/folder/<%= locals.folderId %>/delete"
             method="post"
+            class="column"
           >
             <input
               type="text"
@@ -108,7 +106,9 @@
       </div>
 
       <div class="main-drive-sections">
-        <!-- ==================== folders ==================== -->
+        <!-- ========================================================= -->
+        <!-- folders -->
+        <!-- ========================================================= -->
         <div class="main-drive-section column gap align-center">
           <div class="child-lines">
             <% if (locals.childFolders) { %> <%
@@ -231,7 +231,9 @@
           </button>
         </div>
 
-        <!-- ==================== files ==================== -->
+        <!-- ========================================================= -->
+        <!-- files -->
+        <!-- ========================================================= -->
         <div class="main-drive-section column gap align-center">
           <div class="child-lines">
             <% if (locals.files) { %> <% files.forEach((file)=> { %>
@@ -388,6 +390,11 @@
     if ("<%= locals.modal %>" === "editFile") {
       const editFileModal = document.getElementById("edit-file-modal");
       editFileModal.classList.toggle("hidden");
+
+      const editFileInput = editFileModal.querySelector("input#fileName");
+
+      editFileInput.focus();
+      editFileInput.select();
     }
   });
 </script>

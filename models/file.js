@@ -19,11 +19,14 @@ module.exports.addFiles = async function (files, ownerId, folderId) {
   });
 };
 
-module.exports.getFiles = async function (folderId) {
+module.exports.getFiles = async function (folderId, userId) {
   const isRoot = folderId === "root";
 
   let children = await prisma.file.findMany({
-    where: { folderId: isRoot ? null : Number(folderId) },
+    where: {
+      folderId: isRoot ? null : Number(folderId),
+      ownerId: userId,
+    },
   });
 
   // prisma's orderBy does not allow for case-insensitive ordering

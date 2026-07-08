@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function editFolderControls() {
       const editFolderBtns = document.querySelectorAll(".edit-folder-button");
 
-      if (editFolderBtns) {
+      if (editFolderBtns.length > 0) {
         const editFolderModal = document.getElementById("edit-folder-modal");
         const editFolderForm = document.getElementById("edit-folder-form");
         const editFolderInput =
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function editFileControls() {
       const editFileBtns = document.querySelectorAll(".edit-file-button");
 
-      if (editFileBtns) {
+      if (editFileBtns.length > 0) {
         const editFileModal = document.getElementById("edit-file-modal");
         const editFileForm = document.getElementById("edit-file-form");
         const editFileInput = editFileForm.querySelector("input#fileName");

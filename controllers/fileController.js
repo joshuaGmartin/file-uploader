@@ -1,6 +1,7 @@
 const { body, matchedData, validationResult } = require("express-validator");
 const multer = require("multer");
 const file = require("../models/file");
+const folder = require("../models/folder");
 
 const MAX_SIZE = 200 * 1024; // 100 KB
 const MAX_FILES = 2;
@@ -19,11 +20,38 @@ const validateFile = [
   body("fileName").trim().notEmpty().withMessage("Must include file name"),
 ];
 
+function handlePopupData(req) {
+  // save popup data for this render
+  const modal = req.session.modal || null;
+  const modalFileId = req.session.modalFileId || null;
+  const modalValues = req.session.modalValues || null;
+  const errors = req.session.errors || null;
+
+  // clear popup data from session
+  req.session.modal = null;
+  req.session.modalFileId = null;
+  req.session.modalValues = null;
+  req.session.errors = null;
+
+  return { modal, modalFileId, modalValues, errors };
+}
+
 module.exports.getFile = async function (req, res) {
   const fileId = req.params.fileId;
+  const currentFile = await file.findByFileID(fileId);
+  const parentFolders = await folder.getParents(currentFile.folderId);
+  const popupData = handlePopupData(req);
+
+  res.render("drive/file", {
+    pageTitle: fileId,
+    currentFile,
+    fileId,
+    parentFolders,
+    ...popupData,
+  });
 };
 
-// addFile is always called form /folder route
+// addFile is always called from /folder route
 module.exports.postAddFile = function (req, res) {
   const folderId = req.params.folderId; // current page folder id
 
@@ -100,14 +128,16 @@ module.exports.postEditFile = [
       };
 
       // check if file edit req is on folder page
-      if (req.body.currentFolderId) {
+      if (req.body.currentFolderId && req.body.currentFolderId !== "") {
         return req.session.save(() => {
           res.redirect("/drive/folder/" + req.body.currentFolderId);
         });
       }
       // redirect to file page if not
       else {
-        // return req.session.save(() => {
+        return req.session.save(() => {
+          res.redirect("/drive/file/" + fileId);
+        });
       }
     }
 
@@ -116,14 +146,16 @@ module.exports.postEditFile = [
     await file.editFileName(fileId, fileName);
 
     // check if file edit req is on folder page
-    if (req.body.currentFolderId) {
+    if (req.body.currentFolderId && req.body.currentFolderId !== "") {
       return req.session.save(() => {
         res.redirect("/drive/folder/" + req.body.currentFolderId);
       });
     }
     // redirect to file page if not
     else {
-      // return req.session.save(() => {
+      return req.session.save(() => {
+        res.redirect("/drive/file/" + fileId);
+      });
     }
   },
 ];

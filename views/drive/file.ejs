@@ -5,10 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <script src="/js/eventListeners.js" defer></script>
-    <title><%= locals.pageTitle %> | <%= locals.appTitle %></title>
+    <title>file - <%= locals.pageTitle %> | <%= locals.appTitle %></title>
   </head>
   <body>
-    <%- include("partials/header") %>
-    <main></main>
+    <%- include("../partials/header") %>
+    <main>
+      <!-- current path -->
+      <div class="row gap-xs">
+        <span><b>whereabouts:</b></span>
+        <span class="row">
+          <a href="/drive/folder/root" class="underline-hover">root</a>
+          <% locals.parentFolders.forEach((parentFolder) => { %> /
+          <a
+            href="/drive/folder/<%= parentFolder.id %>"
+            class="underline-hover"
+          >
+            <%= parentFolder.name %>
+          </a>
+          <% }) %>
+        </span>
+      </div>
+
+      <!-- current file -->
+      <div class="row gap-s">
+        <h2>
+          <%= locals.currentFile.name %>
+        </h2>
+
+        <!-- tools -->
+        <div class="row gap-s align-center">
+          <!-- edit file -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-square-pen-icon lucide-square-pen edit-file-button show-clickable hover-white"
+            data-file-id="<%= currentFile.id %>"
+            data-file-name="<%= currentFile.name %>"
+          >
+            <path
+              d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+            />
+            <path
+              d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
+            />
+          </svg>
+
+          <!-- delete file -->
+          <form
+            action="/drive/file/<%= currentFile.id %>/delete"
+            method="post"
+            class="column"
+          >
+            <button
+              type="submit"
+              onclick="
+                return confirm(
+                  'Are you sure you want to delete file: &quot;<%= currentFile.name %>&quot;?',
+                );
+              "
+              class="no-button-style"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-trash2-icon lucide-trash-2 hover-white"
+              >
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <%- include("../partials/modals/edit-file") %>
+    </main>
   </body>
 </html>
+
+<script>
+  // modal control
+  document.addEventListener("DOMContentLoaded", () => {
+    if ("<%= locals.modal %>" === "editFile") {
+      const editFileModal = document.getElementById("edit-file-modal");
+      editFileModal.classList.toggle("hidden");
+
+      const editFileInput = editFileModal.querySelector("input#fileName");
+
+      editFileInput.focus();
+      editFileInput.select();
+    }
+  });
+</script>
