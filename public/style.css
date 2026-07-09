@@ -123,10 +123,12 @@ main {
   }
 }
 
-.main-drive-sections {
+.main-sections {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-l);
+
+  margin-top: 3rem;
 }
 
 /* ========================================================================== */
@@ -147,9 +149,14 @@ main {
   align-items: center;
 }
 
+.just-center {
+  justify-content: center;
+}
+
 .just-space-between {
   justify-content: space-between;
 }
+
 .top-spacing-xl {
   margin-top: var(--spacing-xl);
 }

@@ -21,8 +21,7 @@ async function getData(folderId, userId) {
 function handlePopupData(req) {
   // save popup data for this render
   const modal = req.session.modal || null;
-  const modalFolderId = req.session.modalFolderId || null;
-  const fileId = req.session.modalFileId || null; // need fileId for file errors
+  const modalFolderId = req.session.modalFolderId || null; // folder view contains folders and files
   const modalFileId = req.session.modalFileId || null; // modalFileId is created on editFile failure (check fileController)
   const modalValues = req.session.modalValues || null;
   const errors = req.session.errors || null;
@@ -33,15 +32,13 @@ function handlePopupData(req) {
   req.session.modalValues = null;
   req.session.errors = null;
 
-  return { modal, modalFolderId, modalFileId, fileId, modalValues, errors };
+  return { modal, modalFolderId, modalFileId, modalValues, errors };
 }
 
 module.exports.getDriveFolder = async function (req, res) {
   //need folder no exist redirect?
   const thisData = await getData(req.params.folderId, req.user.id);
   const popupData = handlePopupData(req);
-
-  console.log(popupData);
 
   res.render("drive/folder", {
     ...thisData,
