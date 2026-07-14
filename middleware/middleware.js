@@ -1,4 +1,5 @@
 const folder = require("../models/folder");
+const file = require("../models/file");
 
 //redirect to home if no logged in
 module.exports.isAuthCheck = function (req, res, next) {
@@ -29,6 +30,26 @@ module.exports.folderExistOwnedCheck = async function (req, res, next) {
 
   // if folder exist, check owner
   if (thisFolder.ownerId !== req.user.id)
+    return res.status(403).render("access-denied"); // need no access page
+
+  // else, continue
+  next();
+};
+
+module.exports.fileExistOwnedCheck = async function (req, res, next) {
+  let fileId = req.params.fileId;
+
+  // check for ints (passed as string in params)
+  if (!/^\d+$/.test(req.params.fileId)) {
+    return res.status(404).render("404");
+  }
+
+  const thisFile = await file.findByFileID(fileId);
+  // change to no access
+  if (!thisFile) return res.status(404).render("404");
+
+  // if folder exist, check owner
+  if (thisFile.ownerId !== req.user.id)
     return res.status(403).render("access-denied"); // need no access page
 
   // else, continue
