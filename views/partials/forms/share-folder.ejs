@@ -1,0 +1,30 @@
+<form
+  action="/drive/folder/<%= locals.folderId %>/allow-share"
+  method="post"
+  class="column gap"
+  id="share-folder-form"
+>
+  <h2>Share folder</h2>
+  <!-- no errors here -->
+  <label for="shareTime">
+    <!-- value set in js -->
+    Share for how many days?:
+    <input
+      type="number"
+      name="shareTime"
+      id="shareTime"
+      value="1"
+      min="1"
+      required
+    />
+  </label>
+
+  <!-- for redirection to same page -->
+  <input
+    type="text"
+    name="currentFolderId"
+    value="<%= locals.folderId %>"
+    hidden
+  />
+  <button type="submit">Create Link</button>
+</form>

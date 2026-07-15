@@ -4,6 +4,11 @@ now:
 -need check file ownership (or shareable)
 -delete upload on delete file
 
+-/link /share/token to a folder
+  -sub content routes should looks like /share/token/folder/:folderId or /share/token/file/:fileId
+  -check "root" shared folder shareTime as first check, then check that the folder/:folderId or file/:fileId is a descendant of the "root" shared folder, then render
+  -/share route can reuse folder and file views, just need conditional links and content/tools based on isSharedView local variable
+
 
 later:
 -update to esm?

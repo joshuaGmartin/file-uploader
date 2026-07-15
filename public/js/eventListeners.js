@@ -130,6 +130,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =======================================
+    // share folder controls
+    // =======================================
+    function shareFolderControls() {
+      const shareFolderBtn = document.querySelector(".share-folder-button");
+
+      if (shareFolderBtn) {
+        const shareFolderModal = document.getElementById("share-folder-modal");
+        const shareFolderForm = document.getElementById("share-folder-form");
+
+        const shareFolderInput =
+          shareFolderForm.querySelector("input#shareTime");
+
+        shareFolderBtn.addEventListener("click", () => {
+          shareFolderModal.style.display = "block";
+          shareFolderModal.classList.toggle("hidden");
+
+          shareFolderInput.focus();
+          shareFolderInput.select();
+        });
+      }
+    }
+
+    // =======================================
     // add file controls
     // =======================================
     function addFileControls() {
@@ -157,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         editFileBtns.forEach((editBtn) => {
           editBtn.addEventListener("click", () => {
-            editFileModal.style.display = "block";
             editFileModal.classList.toggle("hidden");
 
             editFileForm.action = `/drive/file/${editBtn.dataset.fileId}/edit`;
@@ -170,6 +192,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // =======================================
+    // auto close modal
+    // =======================================
     function modalExit() {
       const modalOverlays = document.querySelectorAll(".modal-overlay");
 
@@ -217,6 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     createFolderControls();
     editFolderControls();
+    shareFolderControls();
     addFileControls();
     editFileControls();
     modalExit();

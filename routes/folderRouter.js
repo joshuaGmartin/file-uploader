@@ -23,6 +23,15 @@ folderRouter.post(
   middleware.folderExistOwnedCheck,
   folderController.postDeleteFolder,
 );
-folderRouter.post("/:folderId/add-file", fileController.postAddFile);
+folderRouter.post(
+  "/:folderId/add-file",
+  middleware.folderExistOwnedCheck,
+  fileController.postAddFile,
+);
+folderRouter.post(
+  "/:folderId/allow-share",
+  middleware.folderExistOwnedCheck,
+  folderController.postShareFolder,
+);
 
 module.exports = folderRouter;

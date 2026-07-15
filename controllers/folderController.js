@@ -132,3 +132,9 @@ module.exports.postDeleteFolder = async function (req, res) {
 
   res.redirect("/drive/folder/" + redirectId);
 };
+
+module.exports.postShareFolder = async function (req, res) {
+  const folderId = req.params.folderId;
+  // form validation is on front-end (numbers only)
+  const shareTime = req.body.shareTime;
+};

@@ -92,3 +92,7 @@ module.exports.deleteFolder = async function (folderId, ownerId) {
     },
   });
 };
+
+module.exports.allowShareFolder = async function (folderId) {
+  //make folder and all contents shareable
+};
