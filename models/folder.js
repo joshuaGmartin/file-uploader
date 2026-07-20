@@ -1,4 +1,6 @@
+const e = require("express");
 const prisma = require("../lib/prisma.js");
+const crypto = require("crypto");
 
 module.exports.createFolder = async function (folderName, ownerId, parentId) {
   const isRoot = parentId === "root";
@@ -12,7 +14,14 @@ module.exports.createFolder = async function (folderName, ownerId, parentId) {
   });
 };
 
-module.exports.findByFolderID = async function (id) {
+module.exports.findByFolderID = async function (id, ownerId) {
+  if (id === "root") {
+    return await prisma.folder.findFirst({
+      where: { parentId: null, ownerId },
+      include: { children: true },
+    });
+  }
+
   return await prisma.folder.findUnique({
     where: { id: Number(id) },
     include: { children: true },
@@ -28,7 +37,7 @@ module.exports.getChildren = async function (folderId, userId) {
         parentId: null, // null parent implies root level folder
       },
     });
-  } else children = (await this.findByFolderID(folderId)).children;
+  } else children = (await module.exports.findByFolderID(folderId)).children;
 
   // prisma's orderBy does not allow for case-insensitive ordering
   children.sort((a, b) => a.name.localeCompare(b.name));
@@ -93,6 +102,18 @@ module.exports.deleteFolder = async function (folderId, ownerId) {
   });
 };
 
-module.exports.allowShareFolder = async function (folderId) {
-  //make folder and all contents shareable
+module.exports.allowShareFolder = async function (folderId, shareTime) {
+  const shareToken = crypto.randomUUID();
+  const shareExpiresAt = addDays(Number(shareTime));
+
+  return await prisma.folder.update({
+    where: { id: Number(folderId) },
+    data: { shareToken, shareExpiresAt },
+  });
 };
+
+function addDays(numDays) {
+  const date = new Date();
+  date.setDate(date.getDate() + numDays);
+  return date;
+}

@@ -7,15 +7,31 @@ const validateFolder = [
 ];
 
 async function getData(folderId, userId) {
+  const thisFolder = await folder.findByFolderID(folderId, userId);
+
   const childFolders = await folder.getChildren(folderId, userId);
   const parentFolders = await folder.getParents(folderId);
   const files = await file.getFiles(folderId, userId);
 
   let pageTitle;
   if (folderId === "root") pageTitle = "root";
-  else pageTitle = (await folder.findByFolderID(folderId)).name;
+  else pageTitle = thisFolder.name;
 
-  return { pageTitle, folderId, childFolders, parentFolders, files };
+  let shareLink;
+  if (thisFolder?.shareToken) {
+    if (new Date() < thisFolder.shareExpiresAt) {
+      shareLink = `http://localhost:3000/share/${thisFolder.shareToken}/folder/${folderId}`;
+    }
+  }
+
+  return {
+    pageTitle,
+    folderId,
+    childFolders,
+    parentFolders,
+    files,
+    shareLink,
+  };
 }
 
 function handlePopupData(req) {
@@ -137,4 +153,6 @@ module.exports.postShareFolder = async function (req, res) {
   const folderId = req.params.folderId;
   // form validation is on front-end (numbers only)
   const shareTime = req.body.shareTime;
+
+  const token = await folder.allowShareFolder(folderId, shareTime);
 };

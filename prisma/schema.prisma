@@ -36,13 +36,16 @@ model Folder {
   createdAt   DateTime @default(now())
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   parentId Int?
   parent   Folder?  @relation("ParentChildFolder", fields: [parentId], references: [id], onDelete: Cascade)
   children Folder[] @relation("ParentChildFolder")
 
   files File[]
+
+  shareToken     String?   @unique
+  shareExpiresAt DateTime?
 
   @@index([ownerId])
   @@index([parentId])
@@ -60,10 +63,13 @@ model File {
   createdAt   DateTime @default(now())
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   folderId Int?
   folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  shareToken     String?   @unique
+  shareExpiresAt DateTime?
 
   @@index([folderId])
   @@index([ownerId])

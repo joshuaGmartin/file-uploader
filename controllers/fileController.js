@@ -3,7 +3,7 @@ const multer = require("multer");
 const file = require("../models/file");
 const folder = require("../models/folder");
 
-const MAX_SIZE = 200 * 1024; // 100 KB
+const MAX_SIZE = 200 * 1024; // 200 KB
 const MAX_FILES = 2;
 const path = "uploadFiles";
 const dest = "uploads/";

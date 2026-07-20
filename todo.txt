@@ -1,4 +1,6 @@
 now: 
+-do not share root folder (google drive also doesnt not share MyDrive)
+
 -check error/no-permit routes
 -make/check sharing
 -need check file ownership (or shareable)

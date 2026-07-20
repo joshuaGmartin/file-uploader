@@ -104,7 +104,6 @@
           </form>
 
           <!-- share -->
-          <% if(!locals.shareLink) { %>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -121,10 +120,17 @@
             <path d="m16 6-4-4-4 4" />
             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
           </svg>
-
-          <% } %>
         </div>
       </div>
+
+      <!-- share link-->
+      <% if (locals.shareLink) { %>
+
+      <div class="row gap">
+        <b>Share Link:</b
+        ><%= locals.shareLink %>
+      </div>
+      <% } %>
 
       <div class="main-sections">
         <!-- ========================================================= -->
