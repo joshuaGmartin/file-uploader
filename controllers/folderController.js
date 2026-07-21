@@ -7,18 +7,20 @@ const validateFolder = [
 ];
 
 async function getData(folderId, userId) {
-  const thisFolder = await folder.findByFolderID(folderId, userId);
-
   const childFolders = await folder.getChildren(folderId, userId);
   const parentFolders = await folder.getParents(folderId);
   const files = await file.getFiles(folderId, userId);
 
-  let pageTitle;
-  if (folderId === "root") pageTitle = "root";
-  else pageTitle = thisFolder.name;
+  let thisFolder;
+  if (folderId !== "root")
+    thisFolder = await folder.findByFolderID(folderId, userId);
 
-  let shareLink;
-  if (thisFolder?.shareToken) {
+  let pageTitle = "root";
+  if (folderId !== "root") pageTitle = thisFolder.name;
+
+  let shareLink = null;
+  // root is unshareable (not a folder)
+  if (folderId !== "root" && thisFolder?.shareToken) {
     if (new Date() < thisFolder.shareExpiresAt) {
       shareLink = `http://localhost:3000/share/${thisFolder.shareToken}/folder/${folderId}`;
     }
@@ -52,8 +54,12 @@ function handlePopupData(req) {
 }
 
 module.exports.getDriveFolder = async function (req, res) {
+  // share can allow for no user (never shares root)
+  let userId;
+  if (req.user?.id) userId = req.user.id;
+
   //need folder no exist redirect?
-  const thisData = await getData(req.params.folderId, req.user.id);
+  const thisData = await getData(req.params.folderId, userId);
   const popupData = handlePopupData(req);
 
   res.render("drive/folder", {

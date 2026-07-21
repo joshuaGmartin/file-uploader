@@ -15,13 +15,6 @@ module.exports.createFolder = async function (folderName, ownerId, parentId) {
 };
 
 module.exports.findByFolderID = async function (id, ownerId) {
-  if (id === "root") {
-    return await prisma.folder.findFirst({
-      where: { parentId: null, ownerId },
-      include: { children: true },
-    });
-  }
-
   return await prisma.folder.findUnique({
     where: { id: Number(id) },
     include: { children: true },
@@ -109,6 +102,12 @@ module.exports.allowShareFolder = async function (folderId, shareTime) {
   return await prisma.folder.update({
     where: { id: Number(folderId) },
     data: { shareToken, shareExpiresAt },
+  });
+};
+
+module.exports.findByShareToken = async function (shareToken) {
+  return await prisma.folder.findUnique({
+    where: { shareToken },
   });
 };
 

@@ -14,18 +14,17 @@ module.exports.isNoAuthCheck = function (req, res, next) {
 };
 
 module.exports.folderExistOwnedCheck = async function (req, res, next) {
-  let folderId = req.params.folderId;
+  const folderId = req.params.folderId;
 
   // if root, skip (pulls owned root folders/files via controller)
   if (folderId === "root") return next();
 
   // check for ints (passed as string in params)
-  if (!/^\d+$/.test(req.params.folderId)) {
+  if (!/^\d+$/.test(folderId)) {
     return res.status(404).render("404");
   }
 
   const thisFolder = await folder.findByFolderID(folderId);
-  // change to no access
   if (!thisFolder) return res.status(404).render("404");
 
   // if folder exist, check owner
@@ -37,20 +36,55 @@ module.exports.folderExistOwnedCheck = async function (req, res, next) {
 };
 
 module.exports.fileExistOwnedCheck = async function (req, res, next) {
-  let fileId = req.params.fileId;
+  const fileId = req.params.fileId;
 
   // check for ints (passed as string in params)
-  if (!/^\d+$/.test(req.params.fileId)) {
+  if (!/^\d+$/.test(fileId)) {
     return res.status(404).render("404");
   }
 
   const thisFile = await file.findByFileID(fileId);
-  // change to no access
   if (!thisFile) return res.status(404).render("404");
 
   // if folder exist, check owner
   if (thisFile.ownerId !== req.user.id)
     return res.status(403).render("access-denied"); // need no access page
+
+  // else, continue
+  next();
+};
+
+module.exports.shareCheck = async function (req, res, next) {
+  // ======== check folder ========
+  const folderId = req.params.folderId;
+
+  // check for ints (passed as string in params)
+  if (!/^\d+$/.test(folderId)) {
+    return res.status(404).render("404");
+  }
+  // check if exists
+  const thisFolder = await folder.findByFolderID(folderId);
+  if (!thisFolder) return res.status(404).render("404");
+
+  // ======== check share ========
+  const shareToken = req.params.shareToken;
+  // check if exist
+  const shareFolder = await folder.findByShareToken(shareToken);
+  if (!shareFolder) return res.status(404).render("404");
+  // check date
+  if (new Date() > shareFolder.shareExpiresAt)
+    return res.status(403).render("access-denied");
+  // check if current is or is a child of shared folder
+  // getParents() return current folder also
+  const parentFolders = (await folder.getParents(folderId)).reverse();
+  let isShareable = false;
+  for (const parent of parentFolders) {
+    if (parent.shareToken === shareToken) {
+      isShareable = true;
+      break;
+    }
+  }
+  if (!isShareable) return res.status(403).render("access-denied");
 
   // else, continue
   next();

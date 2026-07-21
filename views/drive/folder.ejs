@@ -128,7 +128,12 @@
 
       <div class="row gap">
         <b>Share Link:</b
-        ><%= locals.shareLink %>
+        ><a
+          href="<%= locals.shareLink %>"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><%= locals.shareLink %></a
+        >
       </div>
       <% } %>
 
