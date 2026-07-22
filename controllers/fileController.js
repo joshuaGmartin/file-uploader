@@ -39,8 +39,21 @@ function handlePopupData(req) {
 module.exports.getFile = async function (req, res) {
   const fileId = req.params.fileId;
   const currentFile = await file.findByFileID(fileId);
-  const parentFolders = await folder.getParents(currentFile.folderId);
+  let parentFolders = await folder.getParents(currentFile.folderId);
   const popupData = handlePopupData(req);
+  let thisShareToken = null;
+  if (req.params.shareToken) thisShareToken = req.params.shareToken;
+
+  if (thisShareToken) {
+    let sliceCount = 0;
+
+    for (const parent of parentFolders) {
+      if (parent.shareToken !== thisShareToken) sliceCount++;
+      else break;
+    }
+
+    parentFolders = parentFolders.slice(sliceCount);
+  }
 
   res.render("drive/file", {
     pageTitle: fileId,
@@ -48,6 +61,7 @@ module.exports.getFile = async function (req, res) {
     fileId,
     parentFolders,
     ...popupData,
+    thisShareToken,
   });
 };
 

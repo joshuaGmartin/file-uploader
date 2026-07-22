@@ -14,12 +14,15 @@
       <div class="row gap-xs">
         <span><b>whereabouts:</b></span>
         <span class="row">
+          <% if (!locals.thisShareToken) { %>
           <a href="/drive/folder/root" class="underline-hover">root</a>
+          <% } else { %>
+          <span>...</span>
+          <% } %>
+
           <% locals.parentFolders.forEach((parentFolder) => { %> /
-          <a
-            href="/drive/folder/<%= parentFolder.id %>"
-            class="underline-hover"
-          >
+          <% let href = !locals.thisShareToken ? `/drive/folder/${parentFolder.id}` : `/share/${locals.thisShareToken}/folder/${parentFolder.id}` %>
+          <a href="<%= href %>" class="underline-hover">
             <%= parentFolder.name %>
           </a>
           <% }) %>
@@ -33,6 +36,8 @@
         </h2>
 
         <!-- tools -->
+        <% if (!locals.thisShareToken) { %>
+
         <div class="row gap-s align-center">
           <!-- edit file -->
           <svg
@@ -93,6 +98,7 @@
             </button>
           </form>
         </div>
+        <% } %>
       </div>
 
       <div class="main-sections">

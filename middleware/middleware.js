@@ -13,6 +13,7 @@ module.exports.isNoAuthCheck = function (req, res, next) {
   next();
 };
 
+// may be good to split exist and owned checks
 module.exports.folderExistOwnedCheck = async function (req, res, next) {
   const folderId = req.params.folderId;
 
@@ -54,7 +55,7 @@ module.exports.fileExistOwnedCheck = async function (req, res, next) {
   next();
 };
 
-module.exports.shareCheck = async function (req, res, next) {
+module.exports.shareFolderCheck = async function (req, res, next) {
   // ======== check folder ========
   const folderId = req.params.folderId;
 
@@ -75,8 +76,45 @@ module.exports.shareCheck = async function (req, res, next) {
   if (new Date() > shareFolder.shareExpiresAt)
     return res.status(403).render("access-denied");
   // check if current is or is a child of shared folder
-  // getParents() return current folder also
+  // getParents() returns current folder also
   const parentFolders = (await folder.getParents(folderId)).reverse();
+  let isShareable = false;
+  for (const parent of parentFolders) {
+    if (parent.shareToken === shareToken) {
+      isShareable = true;
+      break;
+    }
+  }
+  if (!isShareable) return res.status(403).render("access-denied");
+
+  // else, continue
+  next();
+};
+
+module.exports.shareFileCheck = async function (req, res, next) {
+  // ======== check file ========
+  const fileId = req.params.fileId;
+
+  // check for ints (passed as string in params)
+  if (!/^\d+$/.test(fileId)) {
+    return res.status(404).render("404");
+  }
+
+  // check if exists
+  const thisFile = await file.findByFileID(fileId);
+  if (!thisFile) return res.status(404).render("404");
+
+  // ======== check share ========
+  const shareToken = req.params.shareToken;
+  // check if exist
+  const shareFolder = await folder.findByShareToken(shareToken);
+  if (!shareFolder) return res.status(404).render("404");
+  // check date
+  if (new Date() > shareFolder.shareExpiresAt)
+    return res.status(403).render("access-denied");
+  // check if child of shared folder
+  // getParents() returns current folder also
+  const parentFolders = (await folder.getParents(thisFile.folderId)).reverse();
   let isShareable = false;
   for (const parent of parentFolders) {
     if (parent.shareToken === shareToken) {
