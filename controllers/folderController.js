@@ -6,9 +6,22 @@ const validateFolder = [
   body("folderName").trim().notEmpty().withMessage("Must include folder name"),
 ];
 
-async function getData(folderId, userId) {
+async function getData(folderId, userId, thisShareToken) {
   const childFolders = await folder.getChildren(folderId, userId);
-  const parentFolders = await folder.getParents(folderId);
+  let parentFolders = await folder.getParents(folderId);
+
+  // if shared, need trim off parents of init shared folder
+  if (thisShareToken) {
+    let sliceCount = 0;
+
+    for (const parent of parentFolders) {
+      if (parent.shareToken !== thisShareToken) sliceCount++;
+      else break;
+    }
+
+    parentFolders = parentFolders.slice(sliceCount);
+  }
+
   const files = await file.getFiles(folderId, userId);
 
   let thisFolder;
@@ -54,17 +67,21 @@ function handlePopupData(req) {
 }
 
 module.exports.getDriveFolder = async function (req, res) {
-  // share can allow for no user (never shares root)
+  // share can allow for no user (never shares root: avoids root folders owner query)
   let userId;
   if (req.user?.id) userId = req.user.id;
 
+  let thisShareToken = null;
+  if (req.params.shareToken) thisShareToken = req.params.shareToken;
+
   //need folder no exist redirect?
-  const thisData = await getData(req.params.folderId, userId);
+  const thisData = await getData(req.params.folderId, userId, thisShareToken);
   const popupData = handlePopupData(req);
 
   res.render("drive/folder", {
     ...thisData,
     ...popupData,
+    thisShareToken,
   });
 };
 
@@ -161,4 +178,6 @@ module.exports.postShareFolder = async function (req, res) {
   const shareTime = req.body.shareTime;
 
   const token = await folder.allowShareFolder(folderId, shareTime);
+
+  res.redirect("/drive/folder/" + folderId);
 };
