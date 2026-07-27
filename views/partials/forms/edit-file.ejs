@@ -3,23 +3,25 @@
 <form action="<%= formAction %>" method="post" id="edit-file-form">
   <h2>Edit file</h2>
   <%- include("../errors") %>
-  <label for="fileName">
-    <!-- value set in js -->
-    File name:
+  <div class="column gap-s">
+    <label for="fileName" class="column">
+      <!-- value set in js -->
+      File name:
+      <input
+        type="text"
+        name="fileName"
+        id="fileName"
+        placeholder="Name your file..."
+        value="<%= locals.modalValues?.fileName || '' %>"
+        required
+    /></label>
+    <!-- for redirection to same page -->
     <input
       type="text"
-      name="fileName"
-      id="fileName"
-      placeholder="Name your file..."
-      value="<%= locals.modalValues?.fileName || '' %>"
-      required
-  /></label>
-  <!-- for redirection to same page -->
-  <input
-    type="text"
-    name="currentFolderId"
-    value="<%= locals.folderId || '' %>"
-    hidden
-  />
-  <button type="submit">Edit</button>
+      name="currentFolderId"
+      value="<%= locals.folderId || '' %>"
+      hidden
+    />
+    <button type="submit" class="button-style-2">Edit</button>
+  </div>
 </form>

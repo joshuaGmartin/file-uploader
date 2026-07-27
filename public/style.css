@@ -3,14 +3,16 @@
 :root {
   --primary-color: black;
   --secondary-color: white;
-  --primary-bg: aquamarine;
-  --secondary-bg: plum;
+  --primary-bg: rgb(149, 192, 255);
+  --secondary-bg: rgb(199, 222, 255);
 
   --spacing-xs: 0.25rem;
   --spacing-s: 0.5rem;
   --spacing: 1rem;
   --spacing-l: 2rem;
   --spacing-xl: 5rem;
+
+  --child-lines-max-width: 40rem;
 
   color: var(--primary-color);
   font-family: Arial, Helvetica, sans-serif;
@@ -25,9 +27,13 @@ body {
   display: flex;
   flex-direction: column;
 
-  padding: 0 var(--spacing);
-
   background-color: var(--primary-bg);
+
+  min-width: 375px;
+
+  * > {
+    padding: 0 var(--spacing);
+  }
 }
 
 header {
@@ -35,8 +41,12 @@ header {
   justify-content: space-between;
   align-items: center;
 
+  background-color: var(--secondary-bg);
+
   position: sticky;
   top: 0;
+
+  padding: 0 var(--spacing);
 
   nav {
     display: flex;
@@ -60,6 +70,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  margin-top: 1rem;
 }
 
 .modal-overlay {
@@ -85,7 +97,7 @@ main {
     margin-top: calc(0.25 * 100vh);
     padding: var(--spacing-l);
 
-    width: 30rem;
+    width: min(30rem, calc(100vw - 2rem));
 
     background-color: var(--secondary-bg);
 
@@ -108,10 +120,29 @@ main {
 }
 
 .child-lines {
-  width: 40rem;
+  max-width: var(--child-lines-max-width);
 
   .child-line {
-    border-bottom: rgba(0, 0, 0, 0.13) solid 1px;
+    border-radius: 1rem;
+
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      bottom: 0px;
+      left: 50%; /* Center the line */
+      transform: translateX(-50%); /* Perfectly balance the centering */
+
+      width: 95%; /* Change this percentage to change the border length */
+      height: 1px; /* This acts as your border thickness */
+      background-color: rgba(
+        0,
+        0,
+        0,
+        0.25
+      ); /* This acts as your border color */
+    }
 
     &:hover {
       background-color: var(--secondary-bg);
@@ -129,6 +160,60 @@ main {
   gap: var(--spacing-l);
 
   margin-top: 3rem;
+}
+
+.button-style {
+  background-color: var(--primary-bg);
+
+  padding: 0 var(--spacing);
+
+  border: 1px solid var(--primary-color);
+  border-radius: 1rem;
+
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--secondary-bg);
+  }
+}
+
+.button-style-2 {
+  background-color: var(--secondary-bg);
+
+  padding: 0 var(--spacing);
+
+  border: 1px solid var(--primary-color);
+  border-radius: 1rem;
+
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--primary-bg);
+  }
+}
+
+input:not([type="file"]) {
+  padding: 0.125rem 0.75rem;
+
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+
+  &:hover:not(:focus) {
+    outline: 1px solid gray;
+  }
+}
+
+input[type="file"] {
+  border: none;
+  outline: none;
+}
+
+.cut-width {
+  max-width: calc(var(--child-lines-max-width) - 10rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* ========================================================================== */
@@ -289,5 +374,11 @@ main {
         }
       }
     }
+  }
+}
+
+@media (max-width: 630px) {
+  :root {
+    --child-lines-max-width: max(25rem, calc(100vw - 1rem));
   }
 }

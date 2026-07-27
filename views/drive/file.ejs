@@ -30,14 +30,14 @@
       </div>
 
       <!-- current file -->
-      <div class="row gap-s">
+      <div class="row gap-s align-center">
         <h2>
           <%= locals.currentFile.name %>
         </h2>
 
         <!-- tools -->
         <% if (!locals.thisShareToken) { %>
-
+        <span>—</span>
         <div class="row gap-s align-center">
           <!-- edit file -->
           <svg

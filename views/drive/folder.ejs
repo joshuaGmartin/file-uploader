@@ -30,14 +30,13 @@
       </div>
 
       <!-- current folder -->
-      <div class="row gap-s">
+      <div class="row gap-s align-center">
         <h2>
           <%= locals.pageTitle %>
         </h2>
-
         <!-- tools -->
         <% if (!locals.thisShareToken) { %>
-
+        <span>—</span>
         <div class="row gap-s align-center">
           <!-- no edit root -->
           <% if (locals.folderId !== "root") { %>
@@ -108,6 +107,7 @@
           </form>
 
           <!-- share -->
+          <% if (locals.folderId !== "root") { %>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -124,6 +124,7 @@
             <path d="m16 6-4-4-4 4" />
             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
           </svg>
+          <% } %>
         </div>
         <% } %>
       </div>
@@ -170,7 +171,7 @@
                     d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
                   />
                 </svg>
-                <%= childFolder.name %>
+                <span class="cut-width"><%= childFolder.name %></span>
               </a>
 
               <!-- tools -->

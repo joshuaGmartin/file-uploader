@@ -1,15 +1,8 @@
 now: 
--do not share root folder (google drive also doesnt not share MyDrive)
-
--check error/no-permit routes
--make/check sharing
--need check file ownership (or shareable)
+-convert to remote data
 -delete upload on delete file
+-limit size of names rendering (ellipse cutoff)
 
--/link /share/token to a folder
-  -sub content routes should looks like /share/token/folder/:folderId or /share/token/file/:fileId
-  -check "root" shared folder shareTime as first check, then check that the folder/:folderId or file/:fileId is a descendant of the "root" shared folder, then render
-  -/share route can reuse folder and file views, just need conditional links and content/tools based on isSharedView local variable
 
 
 later:
