@@ -30,10 +30,6 @@ body {
   background-color: var(--primary-bg);
 
   min-width: 375px;
-
-  * > {
-    padding: 0 var(--spacing);
-  }
 }
 
 header {
@@ -72,6 +68,8 @@ main {
   align-items: center;
 
   margin-top: 1rem;
+
+  padding: 0 var(--spacing);
 }
 
 .modal-overlay {
@@ -121,6 +119,8 @@ main {
 
 .child-lines {
   max-width: var(--child-lines-max-width);
+  width: var(--child-lines-max-width);
+  width: 100%;
 
   .child-line {
     border-radius: 1rem;
@@ -145,7 +145,7 @@ main {
     }
 
     &:hover {
-      background-color: var(--secondary-bg);
+      background-color: lightblue;
     }
 
     &:last-child {
@@ -159,7 +159,15 @@ main {
   flex-direction: column;
   gap: var(--spacing-l);
 
-  margin-top: 3rem;
+  padding: var(--spacing);
+
+  max-width: calc(100vw - 2rem);
+  min-width: 22rem;
+  width: 40rem;
+
+  border-radius: 1rem;
+
+  background-color: var(--secondary-bg);
 }
 
 .button-style {
@@ -216,6 +224,12 @@ input[type="file"] {
   text-overflow: ellipsis;
 }
 
+.cut-width-small {
+  max-width: 5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 /* ========================================================================== */
 /* Classes */
 /* ========================================================================== */
@@ -240,6 +254,13 @@ input[type="file"] {
 
 .just-space-between {
   justify-content: space-between;
+}
+
+.top-spacing {
+  margin-top: var(--spacing);
+}
+.top-spacing-l {
+  margin-top: var(--spacing-l);
 }
 
 .top-spacing-xl {
@@ -291,6 +312,11 @@ input[type="file"] {
 
 .no-shrink {
   width: max-content;
+}
+
+.wrap {
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 
 /* ========================================================================== */
@@ -375,10 +401,17 @@ input[type="file"] {
       }
     }
   }
+
+  #current-path,
+  #share-link {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
 }
 
 @media (max-width: 630px) {
   :root {
-    --child-lines-max-width: max(25rem, calc(100vw - 1rem));
+    --child-lines-max-width: max(20rem, calc(100vw - 1rem));
   }
 }

@@ -11,29 +11,23 @@
     <%- include("../partials/header") %>
 
     <main>
-      <!-- current path -->
-      <div class="row gap-xs">
-        <span><b>whereabouts:</b></span>
-        <span class="row">
-          <% if (!locals.thisShareToken) { %>
-          <a href="/drive/folder/root" class="underline-hover">root</a>
-          <% } else { %>
-          <span>...</span>
-          <% } %>
+      <!-- share link-->
+      <% if (locals.shareLink && !locals.thisShareToken) { %>
 
-          <% locals.parentFolders.forEach((parentFolder) => { %> /
-          <a href="<%= parentFolder.id %>" class="underline-hover">
-            <%= parentFolder.name %>
-          </a>
-          <% }) %>
-        </span>
+      <div class="row gap" id="share-link">
+        <b>Share Link:</b
+        ><a
+          href="<%= locals.shareLink %>"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><%= locals.shareLink %></a
+        >
       </div>
+      <% } %>
 
       <!-- current folder -->
-      <div class="row gap-s align-center">
-        <h2>
-          <%= locals.pageTitle %>
-        </h2>
+      <div class="row gap-s align-center top-spacing-l">
+        <h2 class="cut-width"><%= locals.pageTitle %></h2>
         <!-- tools -->
         <% if (!locals.thisShareToken) { %>
         <span>—</span>
@@ -129,19 +123,26 @@
         <% } %>
       </div>
 
-      <!-- share link-->
-      <% if (locals.shareLink && !locals.thisShareToken) { %>
+      <!-- current path -->
+      <div class="row gap-xs" id="current-path">
+        <span><b>location:</b></span>
+        <span class="row wrap">
+          <% if (!locals.thisShareToken) { %>
+          <a href="/drive/folder/root" class="underline-hover">root</a>
+          <% } else { %>
+          <span>...</span>
+          <% } %>
 
-      <div class="row gap">
-        <b>Share Link:</b
-        ><a
-          href="<%= locals.shareLink %>"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><%= locals.shareLink %></a
-        >
+          <% locals.parentFolders.forEach((parentFolder) => { %> /
+          <a
+            href="<%= parentFolder.id %>"
+            class="underline-hover cut-width-small"
+          >
+            <%= parentFolder.name %>
+          </a>
+          <% }) %>
+        </span>
       </div>
-      <% } %>
 
       <div class="main-sections">
         <!-- ========================================================= -->
@@ -151,10 +152,11 @@
           <div class="child-lines">
             <% if (locals.childFolders) { %> <%
             locals.childFolders.forEach((childFolder) => { %>
-            <div
+            <a
+              href="<%= childFolder.id %>"
               class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right"
             >
-              <a href="<%= childFolder.id %>" class="row gap-s">
+              <div class="row gap-s">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -172,7 +174,7 @@
                   />
                 </svg>
                 <span class="cut-width"><%= childFolder.name %></span>
-              </a>
+              </div>
 
               <!-- tools -->
               <% if (!locals.thisShareToken) { %>
@@ -189,7 +191,7 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-square-pen-icon lucide-square-pen edit-folder-button show-clickable hover-white"
+                  class="lucide lucide-square-pen-icon lucide-square-pen edit-folder-button show-clickable hover-white primary-color"
                   data-folder-id="<%= childFolder.id %>"
                   data-folder-name="<%= childFolder.name %>"
                 >
@@ -244,7 +246,7 @@
                 </form>
               </div>
               <% } %>
-            </div>
+            </a>
 
             <% }) %>
             <% } %>
@@ -304,7 +306,7 @@
                   />
                   <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                 </svg>
-                <%= file.name %>
+                <span class="cut-width"> <%= file.name %> </span>
               </a>
               <!-- tools -->
               <div class="row gap-s align-center">

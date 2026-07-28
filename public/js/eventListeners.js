@@ -116,7 +116,9 @@ document.addEventListener("DOMContentLoaded", () => {
           editFolderForm.querySelector("input#folderName");
 
         editFolderBtns.forEach((editBtn) => {
-          editBtn.addEventListener("click", () => {
+          editBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
             editFolderModal.classList.toggle("hidden");
 
             editFolderForm.action = `/drive/folder/${editBtn.dataset.folderId}/edit`;
