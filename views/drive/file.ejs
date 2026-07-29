@@ -10,30 +10,9 @@
   <body>
     <%- include("../partials/header") %>
     <main>
-      <!-- current path -->
-      <div class="row gap-xs">
-        <span><b>whereabouts:</b></span>
-        <span class="row">
-          <% if (!locals.thisShareToken) { %>
-          <a href="/drive/folder/root" class="underline-hover">root</a>
-          <% } else { %>
-          <span>...</span>
-          <% } %>
-
-          <% locals.parentFolders.forEach((parentFolder) => { %> /
-          <% let href = !locals.thisShareToken ? `/drive/folder/${parentFolder.id}` : `/share/${locals.thisShareToken}/folder/${parentFolder.id}` %>
-          <a href="<%= href %>" class="underline-hover">
-            <%= parentFolder.name %>
-          </a>
-          <% }) %>
-        </span>
-      </div>
-
       <!-- current file -->
-      <div class="row gap-s align-center">
-        <h2>
-          <%= locals.currentFile.name %>
-        </h2>
+      <div class="row gap-s align-center top-spacing-l">
+        <h2 class="cut-width"><%= locals.currentFile.name %></h2>
 
         <!-- tools -->
         <% if (!locals.thisShareToken) { %>
@@ -101,6 +80,25 @@
         <% } %>
       </div>
 
+      <!-- current path -->
+      <div class="row gap-xs" id="current-path">
+        <span><b>location:</b></span>
+        <span class="row wrap">
+          <% if (!locals.thisShareToken) { %>
+          <a href="/drive/folder/root" class="underline-hover">root</a>
+          <% } else { %>
+          <span>...</span>
+          <% } %>
+
+          <% locals.parentFolders.forEach((parentFolder) => { %> /
+          <% let href = !locals.thisShareToken ? `/drive/folder/${parentFolder.id}` : `/share/${locals.thisShareToken}/folder/${parentFolder.id}` %>
+          <a href="<%= href %>" class="underline-hover cut-width-small">
+            <%= parentFolder.name %>
+          </a>
+          <% }) %>
+        </span>
+      </div>
+
       <div class="main-sections">
         <div class="main-section">
           <div>
@@ -120,6 +118,7 @@
           <a
             href="/uploads/<%= locals.currentFile.filename %>"
             download="<%= locals.currentFile.name %>"
+            class="button-style-3"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +130,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-download-icon lucide-download primary-color"
+              class="lucide lucide-download-icon lucide-download"
             >
               <path d="M12 15V3" />
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
