@@ -1,7 +1,7 @@
 now: 
 -convert to remote data
 -delete upload on delete file
--limit size of names rendering (ellipse cutoff)
+-add file size and num files to file upload instructions
 
 
 

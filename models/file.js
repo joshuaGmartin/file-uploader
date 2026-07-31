@@ -1,9 +1,22 @@
 const prisma = require("../lib/prisma.js");
+const supabase = require("../lib/supabase.js");
 
 module.exports.addFiles = async function (files, ownerId, folderId) {
   const isRoot = folderId === "root";
 
   files.forEach(async (file) => {
+    const storagePath = `user_${ownerId}/${DataTransfer.now()}-${file.name}`;
+
+    const { data, error } = await supabase.storage
+      .from("uploads-bucket")
+      .upload(storagePath, file.buffer, {
+        contentType: file.mimetype,
+      });
+
+    if (error) throw error;
+
+    // need add path to file schema model===============================================
+
     await prisma.file.create({
       data: {
         name: file.originalname,

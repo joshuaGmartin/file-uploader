@@ -3,13 +3,14 @@ const multer = require("multer");
 const file = require("../models/file");
 const folder = require("../models/folder");
 
-const MAX_SIZE = 200 * 1024; // 200 KB
+const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
 const MAX_FILES = 2;
 const path = "uploadFiles";
 const dest = "uploads/";
 
 const upload = multer({
-  dest,
+  // dest, // for local dev
+  storage: multer.memoryStorage(), // for supabase
   limits: {
     files: MAX_FILES,
     fileSize: MAX_SIZE,
