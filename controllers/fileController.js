@@ -192,3 +192,10 @@ module.exports.postDeleteFile = async function (req, res) {
 
   res.redirect("/drive/folder/" + redirectId);
 };
+
+module.exports.getDownloadFile = async function (req, res) {
+  const fileId = req.params.fileId;
+
+  const downloadURL = await file.getDownloadUrl(fileId);
+  res.redirect(downloadURL);
+};

@@ -4,8 +4,8 @@ const supabase = require("../lib/supabase.js");
 module.exports.addFiles = async function (files, ownerId, folderId) {
   const isRoot = folderId === "root";
 
-  files.forEach(async (file) => {
-    const storagePath = `user_${ownerId}/${DataTransfer.now()}-${file.name}`;
+  for (const file of files) {
+    const storagePath = `user_${ownerId}/${Date.now()}-${file.originalname}`;
 
     const { data, error } = await supabase.storage
       .from("uploads-bucket")
@@ -13,23 +13,20 @@ module.exports.addFiles = async function (files, ownerId, folderId) {
         contentType: file.mimetype,
       });
 
-    if (error) throw error;
-
-    // need add path to file schema model===============================================
-
     await prisma.file.create({
       data: {
-        name: file.originalname,
-        filename: file.filename,
+        originalName: file.originalname,
+        filename: file.originalname,
         mimetype: file.mimetype,
         size: file.size,
+        path: storagePath,
         ownerId,
         folderId: isRoot ? null : Number(folderId),
       },
     });
+  }
 
-    return;
-  });
+  return;
 };
 
 module.exports.getFiles = async function (folderId, userId) {
@@ -43,7 +40,7 @@ module.exports.getFiles = async function (folderId, userId) {
   });
 
   // prisma's orderBy does not allow for case-insensitive ordering
-  children.sort((a, b) => a.name.localeCompare(b.name));
+  children.sort((a, b) => a.filename.localeCompare(b.filename));
 
   return children;
 };
@@ -57,11 +54,17 @@ module.exports.findByFileID = async function (id) {
 module.exports.editFileName = async function (fileId, fileName) {
   return await prisma.file.update({
     where: { id: Number(fileId) },
-    data: { name: fileName },
+    data: { filename: fileName },
   });
 };
 
 module.exports.deleteFile = async function (fileId) {
+  const thisFile = await module.exports.findByFileID(fileId);
+
+  const { error } = await supabase.storage
+    .from("uploads-bucket")
+    .remove([thisFile.path]);
+
   await prisma.file.delete({
     where: {
       id: Number(fileId),
@@ -71,43 +74,15 @@ module.exports.deleteFile = async function (fileId) {
   return;
 };
 
-// module.exports.getChildren = async function (folderId, userId) {
-//   if (folderId === "root") {
-//     return await prisma.folder.findMany({
-//       where: {
-//         ownerId: userId,
-//         parentId: null, // null parent implies root level folder
-//       },
-//     });
-//   }
+module.exports.getDownloadUrl = async function (fileId) {
+  const thisFile = await module.exports.findByFileID(fileId);
 
-//   return (await this.findByFolderID(folderId)).children;
-// };
+  // for private buckets (Generates a temporary signed URL valid for 60s)
+  const { data, error } = await supabase.storage
+    .from("uploads-bucket")
+    .createSignedUrl(thisFile.path, 60, {
+      download: thisFile.filename,
+    });
 
-// module.exports.getParents = async function (folderId) {
-//   async function getRawParents(folderId) {
-//     if (folderId === "root") return []; // close early if in root ("root" from driveController)
-//     if (folderId === null) return []; // end if reach root (null from recursion in DB)
-
-//     const thisFolder = await module.exports.findByFolderID(folderId);
-
-//     return [thisFolder].concat(await getRawParents(thisFolder.parentId));
-//   }
-
-//   let rawParents = await getRawParents(folderId);
-//   rawParents.reverse(); // need top down for /drive path display
-
-//   return rawParents;
-// };
-
-// module.exports.getParentId = async function (folderId) {
-//   const parentId = (await module.exports.findByFolderID(folderId)).parentId;
-
-//   return parentId ? parentId : "root";
-
-//   return await prisma.folder.delete({
-//     where: {
-//       id: Number(folderId),
-//     },
-//   });
-// };
+  return data.signedUrl;
+};

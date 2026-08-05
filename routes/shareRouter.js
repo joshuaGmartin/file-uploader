@@ -9,6 +9,13 @@ shareRouter.use(
   folderController.getDriveFolder,
 );
 
+// needs be above the general shareToken/file/:fileId
+shareRouter.use(
+  "/:shareToken/file/:fileId/download",
+  middleware.shareFileCheck,
+  fileController.getDownloadFile,
+);
+
 shareRouter.use(
   "/:shareToken/file/:fileId",
   middleware.shareFileCheck,

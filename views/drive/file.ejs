@@ -12,7 +12,7 @@
     <main>
       <!-- current file -->
       <div class="row gap-s align-center top-spacing-l">
-        <h2 class="cut-width"><%= locals.currentFile.name %></h2>
+        <h2 class="cut-width"><%= locals.currentFile.filename %></h2>
 
         <!-- tools -->
         <% if (!locals.thisShareToken) { %>
@@ -51,7 +51,7 @@
               type="submit"
               onclick="
                 return confirm(
-                  'Are you sure you want to delete file: &quot;<%= currentFile.name %>&quot;?',
+                  'Are you sure you want to delete file: &quot;<%= currentFile.filename %>&quot;?',
                 );
               "
               class="no-button-style"
@@ -116,7 +116,7 @@
         </div>
         <div class="main-section row just-center">
           <a
-            href="/uploads/<%= locals.currentFile.filename %>"
+            href="/drive/file/<%= locals.fileId %>/download"
             download="<%= locals.currentFile.name %>"
             class="button-style-3"
           >

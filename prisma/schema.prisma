@@ -54,10 +54,12 @@ model Folder {
 model File {
   id Int @id @default(autoincrement())
 
-  name     String
-  filename String
-  mimetype String
-  size     Int
+  originalName String
+  filename     String
+  mimetype     String
+  size         Int
+
+  path String
 
   lastUpdated DateTime @updatedAt
   createdAt   DateTime @default(now())

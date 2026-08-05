@@ -1,6 +1,7 @@
-const e = require("express");
 const prisma = require("../lib/prisma.js");
+const file = require("./file.js");
 const crypto = require("crypto");
+const supabase = require("../lib/supabase.js");
 
 module.exports.createFolder = async function (folderName, ownerId, parentId) {
   const isRoot = parentId === "root";
@@ -70,6 +71,14 @@ module.exports.getParentId = async function (folderId) {
 module.exports.deleteFolder = async function (folderId, ownerId) {
   // root files do not cascade upon delete (they belong to "no" folder)
   // all other files will cascade upon their folder deletion
+
+  const filesToDeleteFromBucket = await getAllSubFiles(folderId, ownerId);
+  const deleteFilePaths = filesToDeleteFromBucket.map((f) => f.path);
+
+  const { error } = await supabase.storage
+    .from("uploads-bucket")
+    .remove(deleteFilePaths);
+
   if (folderId === "root") {
     await prisma.folder.deleteMany({
       where: {
@@ -115,4 +124,24 @@ function addDays(numDays) {
   const date = new Date();
   date.setDate(date.getDate() + numDays);
   return date;
+}
+
+async function getAllSubFiles(folderId, ownerId) {
+  let allFiles = await file.getFiles(folderId, ownerId);
+  const subFoldersToRecurse = await module.exports.getChildren(
+    folderId,
+    ownerId,
+  );
+
+  const nestedFilesArrays = await Promise.all(
+    subFoldersToRecurse.map((subFolder) =>
+      getAllSubFiles(subFolder.id, ownerId),
+    ),
+  );
+
+  for (const subFiles of nestedFilesArrays) {
+    allFiles.push(...subFiles);
+  }
+
+  return allFiles;
 }

@@ -8,15 +8,23 @@ fileRouter.get(
   middleware.fileExistOwnedCheck,
   fileController.getFile,
 );
+
 fileRouter.post(
   "/:fileId/edit",
   middleware.fileExistOwnedCheck,
   fileController.postEditFile,
 );
+
 fileRouter.post(
   "/:fileId/delete",
   middleware.fileExistOwnedCheck,
   fileController.postDeleteFile,
+);
+
+fileRouter.get(
+  "/:fileId/download",
+  middleware.fileExistOwnedCheck,
+  fileController.getDownloadFile,
 );
 
 module.exports = fileRouter;

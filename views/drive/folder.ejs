@@ -306,7 +306,7 @@
                   />
                   <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                 </svg>
-                <span class="cut-width"> <%= file.name %> </span>
+                <span class="cut-width"> <%= file.filename %> </span>
               </a>
               <!-- tools -->
               <div class="width-max-content row gap-s align-center">
@@ -335,10 +335,8 @@
                 </svg>
                 <% } %>
 
-                <a
-                  href="/uploads/<%= file.filename %>"
-                  download="<%= file.name %>"
-                >
+                <% href = !locals.thisShareToken ? `/drive/file/${file.id}/download` : `/share/${locals.thisShareToken}/file/${file.id}/download` %>
+                <a href="<%= href %>" download="<%= file.name %>">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -374,7 +372,7 @@
                     type="submit"
                     onclick="
                       return confirm(
-                        'Are you sure you want to delete file: &quot;<%= file.name %>&quot;?',
+                        'Are you sure you want to delete file: &quot;<%= file.filename %>&quot;?',
                       );
                     "
                     class="no-button-style"

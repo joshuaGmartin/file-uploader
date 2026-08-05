@@ -166,6 +166,7 @@ main {
   gap: var(--spacing-l);
 
   padding: var(--spacing);
+  padding-bottom: var(--spacing-l);
 
   max-width: calc(100vw - 2rem);
   min-width: 22rem;

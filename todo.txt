@@ -1,19 +1,11 @@
 now: 
 -convert to remote data
--delete upload on delete file
 -add file size and num files to file upload instructions
 
 
 
 later:
 -update to esm?
--owner of folder check
-  --and exist check
--addEventListener for drive editFolder popup
-  -close and modal styling
-    -close should be redirect to curr page to reset modal data
--focus on login input
--store/delete files remotely
 
 
 
