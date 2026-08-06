@@ -284,10 +284,11 @@
           <div class="child-lines">
             <% if (locals.files) { %> <% files.forEach((file)=> { %>
 
+            <% let href = !locals.thisShareToken ? `/drive/file/${file.id}` : `/share/${locals.thisShareToken}/file/${file.id}` %>
             <div
               class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right"
+              onclick="window.location.href = '<%= href %>'"
             >
-              <% let href = !locals.thisShareToken ? `/drive/file/${file.id}` : `/share/${locals.thisShareToken}/file/${file.id}` %>
               <a href="<%= href %>" class="row gap-s">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -309,7 +310,10 @@
                 <span class="cut-width"> <%= file.filename %> </span>
               </a>
               <!-- tools -->
-              <div class="width-max-content row gap-s align-center">
+              <div
+                class="width-max-content row gap-s align-center"
+                onclick="event.stopPropagation()"
+              >
                 <!-- edit file -->
                 <% if (!locals.thisShareToken) { %>
                 <svg

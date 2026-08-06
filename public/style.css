@@ -152,6 +152,7 @@ main {
 
     &:hover {
       background-color: lightblue;
+      cursor: pointer;
     }
 
     &:last-child {
