@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // all routes
   // ============================================================================
 
-  const overlay = document.getElementById("loading-overlay");
   // =======================================
   // show spinner on link/form clicks
   // =======================================
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // for going back in browser
     window.addEventListener("pageshow", (e) => {
-      const overlay = document.getElementById("loading-overlay");
       if (overlay) {
         overlay.classList.add("hidden");
         return;
@@ -307,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addFileControls();
     editFileControls();
     modalExit();
-    showHideSpinner();
   }
+  // runs on all views
+  showHideSpinner();
 });

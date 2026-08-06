@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
+    <script src="/js/eventListeners.js" defer></script>
     <title><%= locals.appTitle %></title>
   </head>
   <body>
-    <%- include("./partials/spinner") %>
+    <%- include("partials/spinner") %>
     <%- include("partials/header") %>
 
     <main>
@@ -17,8 +18,8 @@
           <p>Please login or register an account</p>
         </div>
         <div class="row align-center gap-s">
-          <a href="/login"><button class="button-style">Login</button></a>
-          <a href="/register"><button class="button-style">Register</button></a>
+          <a href="/login" class="button-style hide-link-style">Login</a>
+          <a href="/register" class="button-style hide-link-style">Register</a>
         </div>
       </div>
     </main>
