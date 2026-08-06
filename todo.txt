@@ -2,6 +2,8 @@ now:
 -convert to remote data
 -add file size and num files to file upload instructions
 
+-reroute to loading screen on each click? better ux
+
 
 
 later:

@@ -115,9 +115,12 @@
           </div>
         </div>
         <div class="main-section row just-center">
+          <% href = !locals.thisShareToken ?
+          `/drive/file/${locals.fileId}/download` :
+          `/share/${locals.thisShareToken}/file/${locals.fileId}/download` %>
           <a
-            href="/drive/file/<%= locals.fileId %>/download"
-            download="<%= locals.currentFile.name %>"
+            href="<%= href %>"
+            download="<%= locals.currentFile.filename %>"
             class="button-style-3"
           >
             <svg
