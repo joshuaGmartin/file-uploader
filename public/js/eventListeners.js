@@ -2,6 +2,65 @@ const path = window.location.pathname;
 
 document.addEventListener("DOMContentLoaded", () => {
   // ============================================================================
+  // all routes
+  // ============================================================================
+
+  const overlay = document.getElementById("loading-overlay");
+  // =======================================
+  // show spinner on link/form clicks
+  // =======================================
+  function showHideSpinner() {
+    const overlay = document.getElementById("loading-overlay");
+
+    // for going back in browser
+    window.addEventListener("pageshow", (e) => {
+      const overlay = document.getElementById("loading-overlay");
+      if (overlay) {
+        overlay.classList.add("hidden");
+        return;
+      }
+    });
+
+    // show spinner on form submits
+    document.addEventListener("submit", (e) => {
+      const form = e.target;
+
+      if (!form.checkValidity()) {
+        return;
+      }
+      overlay.classList.remove("hidden");
+      return;
+    });
+
+    // show spinner on internal links, not opening in a new tab, and not a JS anchor (#)
+    document.addEventListener("click", (e) => {
+      // ignore form clicks and submissions (bug fix: the click on form submit was firing here)
+      if (e.target.closest("button[type='submit'], input[type='submit']")) {
+        return;
+      }
+      if (e.target.closest("form")) {
+        return;
+      }
+
+      const link = e.target.closest("a");
+      const showSpinnerElm = e.target.closest(".show-spinner");
+
+      if (
+        (link &&
+          link.href &&
+          !link.target &&
+          !link.href.includes("#") &&
+          link.origin === window.location.origin) ||
+        showSpinnerElm
+      ) {
+        overlay.classList.remove("hidden");
+        return;
+      }
+      return;
+    });
+  }
+
+  // ============================================================================
   // /register or /login
   // ============================================================================
 
@@ -248,5 +307,6 @@ document.addEventListener("DOMContentLoaded", () => {
     addFileControls();
     editFileControls();
     modalExit();
+    showHideSpinner();
   }
 });

@@ -8,6 +8,7 @@
     <title>folder - <%= locals.pageTitle %> | <%= locals.appTitle %></title>
   </head>
   <body>
+    <%- include("../partials/spinner") %>
     <%- include("../partials/header") %>
 
     <main>
@@ -152,11 +153,11 @@
           <div class="child-lines">
             <% if (locals.childFolders) { %> <%
             locals.childFolders.forEach((childFolder) => { %>
-            <a
-              href="<%= childFolder.id %>"
-              class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right"
+            <div
+              class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right show-spinner"
+              onclick="window.location.href = '<%= childFolder.id %>'"
             >
-              <div class="row gap-s">
+              <a class="row gap-s" href="<%= childFolder.id %>">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -174,12 +175,15 @@
                   />
                 </svg>
                 <span class="cut-width"><%= childFolder.name %></span>
-              </div>
+              </a>
 
               <!-- tools -->
               <% if (!locals.thisShareToken) { %>
 
-              <div class="width-max-content row gap-s align-center">
+              <div
+                class="width-max-content row gap-s align-center"
+                onclick="event.stopPropagation()"
+              >
                 <!-- edit folder -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +250,7 @@
                 </form>
               </div>
               <% } %>
-            </a>
+            </div>
 
             <% }) %>
             <% } %>
@@ -286,7 +290,7 @@
 
             <% let href = !locals.thisShareToken ? `/drive/file/${file.id}` : `/share/${locals.thisShareToken}/file/${file.id}` %>
             <div
-              class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right"
+              class="child-line row gap-s align-center just-space-between padding-top-s padding-bottom-s padding-left padding-right show-spinner"
               onclick="window.location.href = '<%= href %>'"
             >
               <a href="<%= href %>" class="row gap-s">
