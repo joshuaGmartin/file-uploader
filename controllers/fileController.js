@@ -137,7 +137,7 @@ module.exports.postEditFile = [
       //  save in session to persist popup on error
       req.session.modal = "editFile";
       req.session.modalFileId = fileId;
-      req.session.modalValues = { fileName: editFile.name };
+      req.session.modalValues = { fileName: editFile.filename };
       req.session.errors = {
         [req.session.modal]: errors.array(),
       };

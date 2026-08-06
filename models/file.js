@@ -1,5 +1,6 @@
 const prisma = require("../lib/prisma.js");
 const supabase = require("../lib/supabase.js");
+const path = require("path");
 
 module.exports.addFiles = async function (files, ownerId, folderId) {
   const isRoot = folderId === "root";
@@ -77,11 +78,19 @@ module.exports.deleteFile = async function (fileId) {
 module.exports.getDownloadUrl = async function (fileId) {
   const thisFile = await module.exports.findByFileID(fileId);
 
+  // get original extension
+  const ext = path.extname(thisFile.originalName);
+
+  // append extension if not there
+  const downloadName = thisFile.filename.endsWith(ext)
+    ? thisFile.filename
+    : `${thisFile.filename}${ext}`;
+
   // for private buckets (Generates a temporary signed URL valid for 60s)
   const { data, error } = await supabase.storage
     .from("uploads-bucket")
     .createSignedUrl(thisFile.path, 60, {
-      download: thisFile.filename,
+      download: downloadName,
     });
 
   return data.signedUrl;
