@@ -3,10 +3,16 @@ const multer = require("multer");
 const file = require("../models/file");
 const folder = require("../models/folder");
 
+/* 
+!!!: 
+if change max size or files, must also update the instructions in
+views/partials/forms/add-files.ejs 
+*/
 const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
 const MAX_FILES = 2;
+
 const path = "uploadFiles";
-const dest = "uploads/";
+// const dest = "uploads/";
 
 const upload = multer({
   // dest, // for local dev

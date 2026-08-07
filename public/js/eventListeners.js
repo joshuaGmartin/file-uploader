@@ -32,11 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // show spinner on internal links, not opening in a new tab, and not a JS anchor (#)
     document.addEventListener("click", (e) => {
-      // ignore form clicks and submissions (bug fix: the click on form submit was firing here)
+      // ignore list
+      // no form submits
       if (e.target.closest("button[type='submit'], input[type='submit']")) {
         return;
       }
+      // no forms
       if (e.target.closest("form")) {
+        return;
+      }
+      // class exclusions
+      if (e.target.closest(".no-show-spinner")) {
         return;
       }
 

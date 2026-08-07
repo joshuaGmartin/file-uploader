@@ -108,7 +108,19 @@
           </div>
           <div>
             <b>Size:</b>
-            <%= locals.currentFile.size/1000 %>KB
+            <% let byteFactor = 1024 * 1024; %>
+            <% let byteSize = "MB"; %>
+            <% if (locals.currentFile.size < (1024 * 1024)) { %>
+            <% byteFactor = 1024; %>
+            <% byteSize = "KB"; %>
+            <% } %>
+            <% if (locals.currentFile.size < 1024) { %>
+            <% byteFactor = 1; %>
+            <% byteSize = "B"; %>
+            <% } %>
+            <% const formattedSize = (locals.currentFile.size / byteFactor).toFixed(2) %>
+            <% %>
+            <%= formattedSize+byteSize %>
           </div>
           <div>
             <b> MIME type:</b>
@@ -122,7 +134,7 @@
           <a
             href="<%= href %>"
             download="<%= locals.currentFile.filename %>"
-            class="button-style-3"
+            class="button-style-3 no-show-spinner"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
