@@ -4,7 +4,7 @@ now:
 
 later:
 -update to esm?
-
+-allow logged in and shared view?
 
 
 

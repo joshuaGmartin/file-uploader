@@ -6,7 +6,7 @@ const validateFolder = [
   body("folderName").trim().notEmpty().withMessage("Must include folder name"),
 ];
 
-async function getData(folderId, userId, thisShareToken) {
+async function getData(folderId, userId, thisShareToken, req) {
   const childFolders = await folder.getChildren(folderId, userId);
   let parentFolders = await folder.getParents(folderId);
 
@@ -35,7 +35,7 @@ async function getData(folderId, userId, thisShareToken) {
   // root is unshareable (not a folder)
   if (folderId !== "root" && thisFolder?.shareToken) {
     if (new Date() < thisFolder.shareExpiresAt) {
-      shareLink = `http://localhost:3000/share/${thisFolder.shareToken}/folder/${folderId}`;
+      shareLink = `${req.protocol}://${req.get("host")}/share/${thisFolder.shareToken}/folder/${folderId}`;
     }
   }
 
@@ -75,7 +75,12 @@ module.exports.getDriveFolder = async function (req, res) {
   if (req.params.shareToken) thisShareToken = req.params.shareToken;
 
   //need folder no exist redirect?
-  const thisData = await getData(req.params.folderId, userId, thisShareToken);
+  const thisData = await getData(
+    req.params.folderId,
+    userId,
+    thisShareToken,
+    req, //afterthought for share link on Render
+  );
   const popupData = handlePopupData(req);
 
   res.render("drive/folder", {
