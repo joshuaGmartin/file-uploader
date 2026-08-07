@@ -186,7 +186,7 @@ main {
   border: 1px solid var(--primary-color);
   border-radius: 1rem;
 
-  color: --primary-color;
+  color: var(--primary-color);
 
   transition:
     background-color 0.2s ease,
@@ -205,6 +205,8 @@ main {
 
   border: 1px solid var(--primary-color);
   border-radius: 1rem;
+
+  color: var(--primary-color);
 
   transition:
     background-color 0.2s ease,
