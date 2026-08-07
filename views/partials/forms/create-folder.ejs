@@ -1,4 +1,8 @@
-<form action="/drive/folder/<%= locals.folderId %>/create" method="post">
+<form
+  action="/drive/folder/<%= locals.folderId %>/create"
+  method="post"
+  class="column gap-s"
+>
   <h2>Create folder</h2>
   <%- include("../errors") %>
   <label for="folderName"

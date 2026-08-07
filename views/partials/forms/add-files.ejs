@@ -2,10 +2,11 @@
   action="/drive/folder/<%= locals.folderId %>/add-file"
   method="post"
   enctype="multipart/form-data"
+  class="column gap-s"
 >
   <h2>Add File</h2>
   <%- include("../errors") %>
   <input type="file" name="uploadFiles" multiple required />
-  <button type="submit" class="button-style-2">Add file</button>
   <div class="instructions">2 files maximum, no more than 50MB each</div>
+  <button type="submit" class="button-style-2">Add file</button>
 </form>
